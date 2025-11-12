@@ -1,0 +1,851 @@
+/**
+ * Alpine Guide Widget - Styles CSS
+ * Styles optimisés pour intégration marque blanche
+ */
+
+/* Variables CSS personnalisables */
+:root {
+  /* Couleurs primaires */
+  --alpine-primary: #0066CC;
+  --alpine-primary-dark: #0052A3;
+  --alpine-primary-light: #E6F2FF;
+  
+  /* Couleurs d'accentuation */
+  --alpine-accent: #FF6B35;
+  --alpine-success: #28A745;
+  --alpine-warning: #FFC107;
+  --alpine-error: #DC3545;
+  
+  /* Couleurs thème clair */
+  --alpine-bg-light: #FFFFFF;
+  --alpine-surface-light: #F8FAFC;
+  --alpine-text-light: #1A1A1A;
+  --alpine-text-secondary-light: #6B7280;
+  --alpine-border-light: #E5E7EB;
+  
+  /* Couleurs thème sombre */
+  --alpine-bg-dark: #1A1A1A;
+  --alpine-surface-dark: #2D2D2D;
+  --alpine-text-dark: #FFFFFF;
+  --alpine-text-secondary-dark: #B0B0B0;
+  --alpine-border-dark: #404040;
+  
+  /* Variables dynamiques (modifiées par JS) */
+  --alpine-bg: var(--alpine-bg-light);
+  --alpine-surface: var(--alpine-surface-light);
+  --alpine-text: var(--alpine-text-light);
+  --alpine-text-secondary: var(--alpine-text-secondary-light);
+  --alpine-border: var(--alpine-border-light);
+  
+  /* Typographie */
+  --alpine-font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --alpine-font-size-base: 14px;
+  --alpine-font-size-small: 12px;
+  --alpine-font-size-large: 16px;
+  --alpine-line-height: 1.4;
+  
+  /* Espacement */
+  --alpine-spacing-xs: 4px;
+  --alpine-spacing-sm: 8px;
+  --alpine-spacing-md: 12px;
+  --alpine-spacing-lg: 16px;
+  --alpine-spacing-xl: 20px;
+  --alpine-spacing-xxl: 24px;
+  
+  /* Border radius */
+  --alpine-radius-sm: 4px;
+  --alpine-radius-md: 8px;
+  --alpine-radius-lg: 12px;
+  --alpine-radius-xl: 16px;
+  --alpine-radius-full: 50%;
+  
+  /* Ombres */
+  --alpine-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --alpine-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --alpine-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --alpine-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --alpine-shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  
+  /* Transitions */
+  --alpine-transition-fast: 0.15s ease-out;
+  --alpine-transition-normal: 0.2s ease-out;
+  --alpine-transition-slow: 0.3s ease-out;
+  
+  /* Z-index */
+  --alpine-z-widget: 999999;
+  --alpine-z-modal: 1000000;
+  --alpine-z-tooltip: 1000001;
+}
+
+/* Thème sombre */
+.alpine-widget-theme-dark {
+  --alpine-bg: var(--alpine-bg-dark);
+  --alpine-surface: var(--alpine-surface-dark);
+  --alpine-text: var(--alpine-text-dark);
+  --alpine-text-secondary: var(--alpine-text-secondary-dark);
+  --alpine-border: var(--alpine-border-dark);
+}
+
+/* Container principal du widget */
+#alpine-guide-widget {
+  position: fixed;
+  z-index: var(--alpine-z-widget);
+  font-family: var(--alpine-font-family);
+  font-size: var(--alpine-font-size-base);
+  line-height: var(--alpine-line-height);
+  color: var(--alpine-text);
+  
+  /* Reset de styles pour éviter les conflits */
+  all: initial;
+  font-family: var(--alpine-font-family);
+  color: var(--alpine-text);
+}
+
+#alpine-guide-widget *,
+#alpine-guide-widget *::before,
+#alpine-guide-widget *::after {
+  box-sizing: border-box;
+}
+
+/* Positionnement du widget */
+.alpine-widget-bottom-right {
+  bottom: var(--alpine-spacing-xxl);
+  right: var(--alpine-spacing-xxl);
+}
+
+.alpine-widget-bottom-left {
+  bottom: var(--alpine-spacing-xxl);
+  left: var(--alpine-spacing-xxl);
+}
+
+.alpine-widget-top-right {
+  top: var(--alpine-spacing-xxl);
+  right: var(--alpine-spacing-xxl);
+}
+
+.alpine-widget-top-left {
+  top: var(--alpine-spacing-xxl);
+  left: var(--alpine-spacing-xxl);
+}
+
+/* Bouton flottant (trigger) */
+.alpine-trigger {
+  width: 60px;
+  height: 60px;
+  background: var(--alpine-primary);
+  border-radius: var(--alpine-radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: var(--alpine-shadow-lg);
+  transition: all var(--alpine-transition-normal);
+  position: relative;
+  border: none;
+  outline: none;
+  user-select: none;
+}
+
+.alpine-trigger:hover {
+  background: var(--alpine-primary-dark);
+  transform: scale(1.05);
+  box-shadow: var(--alpine-shadow-xl);
+}
+
+.alpine-trigger:active {
+  transform: scale(0.95);
+}
+
+.alpine-trigger:focus {
+  outline: 2px solid var(--alpine-primary-light);
+  outline-offset: 2px;
+}
+
+.alpine-trigger-icon {
+  width: 24px;
+  height: 24px;
+  color: white;
+  transition: transform var(--alpine-transition-fast);
+}
+
+.alpine-trigger:hover .alpine-trigger-icon {
+  transform: scale(1.1);
+}
+
+/* Badge de notification */
+.alpine-trigger-notification {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background: var(--alpine-error);
+  color: white;
+  border-radius: var(--alpine-radius-full);
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--alpine-font-size-small);
+  font-weight: 600;
+  min-width: 20px;
+  padding: 0 var(--alpine-spacing-xs);
+  box-shadow: var(--alpine-shadow-md);
+  animation: alpine-pulse 2s infinite;
+}
+
+@keyframes alpine-pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+}
+
+/* Container de chat */
+.alpine-chat-container {
+  width: 380px;
+  height: 600px;
+  background: var(--alpine-bg);
+  border-radius: var(--alpine-radius-xl);
+  box-shadow: var(--alpine-shadow-2xl);
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  overflow: hidden;
+  border: 1px solid var(--alpine-border);
+  backdrop-filter: blur(10px);
+}
+
+/* Positionnement du chat selon la position du trigger */
+.alpine-widget-bottom-right .alpine-chat-container {
+  bottom: 80px;
+  right: 0;
+}
+
+.alpine-widget-bottom-left .alpine-chat-container {
+  bottom: 80px;
+  left: 0;
+}
+
+.alpine-widget-top-right .alpine-chat-container {
+  top: 80px;
+  right: 0;
+}
+
+.alpine-widget-top-left .alpine-chat-container {
+  top: 80px;
+  left: 0;
+}
+
+/* En-tête du chat */
+.alpine-chat-header {
+  padding: var(--alpine-spacing-lg) var(--alpine-spacing-xl);
+  background: linear-gradient(135deg, var(--alpine-primary) 0%, var(--alpine-primary-dark) 100%);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 72px;
+  position: relative;
+  overflow: hidden;
+}
+
+.alpine-chat-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.1"/><circle cx="50" cy="10" r="0.5" fill="white" opacity="0.05"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+  pointer-events: none;
+}
+
+.alpine-chat-title {
+  display: flex;
+  align-items: center;
+  gap: var(--alpine-spacing-md);
+  position: relative;
+  z-index: 1;
+}
+
+.alpine-chat-avatar {
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: var(--alpine-radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.alpine-chat-avatar svg {
+  width: 20px;
+  height: 20px;
+}
+
+.alpine-chat-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.alpine-chat-name {
+  font-weight: 600;
+  font-size: var(--alpine-font-size-large);
+  line-height: 1.2;
+}
+
+.alpine-chat-status {
+  font-size: var(--alpine-font-size-small);
+  opacity: 0.9;
+  display: flex;
+  align-items: center;
+  gap: var(--alpine-spacing-xs);
+}
+
+.alpine-chat-status::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  background: #4ADE80;
+  border-radius: var(--alpine-radius-full);
+  animation: alpine-status-pulse 2s infinite;
+}
+
+@keyframes alpine-status-pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Bouton de fermeture */
+.alpine-chat-close {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: var(--alpine-spacing-sm);
+  border-radius: var(--alpine-radius-sm);
+  transition: all var(--alpine-transition-fast);
+  position: relative;
+  z-index: 1;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.alpine-chat-close:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: scale(1.05);
+}
+
+.alpine-chat-close:active {
+  transform: scale(0.95);
+}
+
+.alpine-chat-close svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Zone de messages */
+.alpine-chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--alpine-spacing-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--alpine-spacing-md);
+  scroll-behavior: smooth;
+}
+
+.alpine-chat-messages::-webkit-scrollbar {
+  width: 4px;
+}
+
+.alpine-chat-messages::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.alpine-chat-messages::-webkit-scrollbar-thumb {
+  background: var(--alpine-border);
+  border-radius: 2px;
+}
+
+.alpine-chat-messages::-webkit-scrollbar-thumb:hover {
+  background: var(--alpine-text-secondary);
+}
+
+/* Messages individuels */
+.alpine-message {
+  display: flex;
+  max-width: 85%;
+  margin-bottom: var(--alpine-spacing-xs);
+  animation: alpine-message-slide-in 0.3s ease-out;
+}
+
+@keyframes alpine-message-slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.alpine-message-bot {
+  align-self: flex-start;
+}
+
+.alpine-message-user {
+  align-self: flex-end;
+}
+
+.alpine-message-content {
+  padding: var(--alpine-spacing-md) var(--alpine-spacing-lg);
+  border-radius: 18px;
+  word-wrap: break-word;
+  font-size: var(--alpine-font-size-base);
+  line-height: 1.4;
+  position: relative;
+  box-shadow: var(--alpine-shadow-sm);
+}
+
+/* Messages du bot */
+.alpine-message-bot .alpine-message-content {
+  background: var(--alpine-surface);
+  color: var(--alpine-text);
+  border-bottom-left-radius: var(--alpine-spacing-xs);
+  border: 1px solid var(--alpine-border);
+}
+
+.alpine-message-bot .alpine-message-content::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: -8px;
+  width: 0;
+  height: 0;
+  border: 8px solid transparent;
+  border-right-color: var(--alpine-surface);
+  border-bottom: 0;
+  border-left: 0;
+  margin-bottom: -1px;
+}
+
+/* Messages de l'utilisateur */
+.alpine-message-user .alpine-message-content {
+  background: linear-gradient(135deg, var(--alpine-primary) 0%, var(--alpine-primary-dark) 100%);
+  color: white;
+  border-bottom-right-radius: var(--alpine-spacing-xs);
+}
+
+.alpine-message-user .alpine-message-content::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: -8px;
+  width: 0;
+  height: 0;
+  border: 8px solid transparent;
+  border-left-color: var(--alpine-primary);
+  border-bottom: 0;
+  border-right: 0;
+  margin-bottom: -1px;
+}
+
+/* Support du markdown dans les messages */
+.alpine-message-content strong {
+  font-weight: 600;
+}
+
+.alpine-message-content em {
+  font-style: italic;
+}
+
+.alpine-message-content code {
+  background: rgba(0, 0, 0, 0.1);
+  padding: 2px 4px;
+  border-radius: var(--alpine-radius-sm);
+  font-family: 'Monaco', 'Consolas', monospace;
+  font-size: 0.9em;
+}
+
+.alpine-message-content a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: rgba(255, 255, 255, 0.5);
+}
+
+.alpine-message-bot .alpine-message-content a {
+  color: var(--alpine-primary);
+  text-decoration-color: var(--alpine-primary);
+}
+
+/* Indicateur de frappe */
+.alpine-typing-indicator {
+  padding: var(--alpine-spacing-md) var(--alpine-spacing-xl);
+  background: var(--alpine-surface);
+  border-top: 1px solid var(--alpine-border);
+  animation: alpine-fade-in 0.3s ease-out;
+}
+
+.alpine-typing-dots {
+  display: flex;
+  gap: var(--alpine-spacing-xs);
+  align-items: center;
+}
+
+.alpine-typing-dots::before {
+  content: 'En train d\'écrire';
+  font-size: var(--alpine-font-size-small);
+  color: var(--alpine-text-secondary);
+  margin-right: var(--alpine-spacing-sm);
+}
+
+.alpine-typing-dots span {
+  width: 6px;
+  height: 6px;
+  background: var(--alpine-text-secondary);
+  border-radius: var(--alpine-radius-full);
+  animation: alpine-typing 1.4s infinite ease-in-out;
+}
+
+.alpine-typing-dots span:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.alpine-typing-dots span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.alpine-typing-dots span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes alpine-typing {
+  0%, 80%, 100% {
+    transform: scale(0.8) translateY(0);
+    opacity: 0.5;
+  }
+  40% {
+    transform: scale(1) translateY(-4px);
+    opacity: 1;
+  }
+}
+
+/* Suggestions */
+.alpine-suggestions {
+  padding: var(--alpine-spacing-md) var(--alpine-spacing-xl);
+  border-top: 1px solid var(--alpine-border);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--alpine-spacing-sm);
+  background: var(--alpine-bg);
+  animation: alpine-fade-in 0.3s ease-out;
+}
+
+.alpine-suggestion {
+  padding: var(--alpine-spacing-sm) var(--alpine-spacing-md);
+  background: var(--alpine-surface);
+  border: 1px solid var(--alpine-border);
+  border-radius: 16px;
+  cursor: pointer;
+  font-size: var(--alpine-font-size-small);
+  transition: all var(--alpine-transition-fast);
+  color: var(--alpine-text);
+  font-family: inherit;
+  line-height: 1.2;
+  white-space: nowrap;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.alpine-suggestion:hover {
+  background: var(--alpine-primary);
+  color: white;
+  border-color: var(--alpine-primary);
+  transform: translateY(-1px);
+  box-shadow: var(--alpine-shadow-md);
+}
+
+.alpine-suggestion:active {
+  transform: translateY(0);
+}
+
+/* Zone de saisie */
+.alpine-chat-input-container {
+  padding: var(--alpine-spacing-lg) var(--alpine-spacing-xl);
+  border-top: 1px solid var(--alpine-border);
+  background: var(--alpine-bg);
+}
+
+.alpine-chat-input-wrapper {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--alpine-spacing-md);
+  background: var(--alpine-surface);
+  border-radius: 24px;
+  padding: var(--alpine-spacing-sm) var(--alpine-spacing-md);
+  border: 1px solid var(--alpine-border);
+  transition: all var(--alpine-transition-fast);
+  position: relative;
+}
+
+.alpine-chat-input-wrapper:focus-within {
+  border-color: var(--alpine-primary);
+  box-shadow: 0 0 0 3px rgba(var(--alpine-primary), 0.1);
+}
+
+.alpine-chat-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--alpine-text);
+  resize: none;
+  max-height: 120px;
+  min-height: 20px;
+  font-family: inherit;
+  font-size: var(--alpine-font-size-base);
+  line-height: var(--alpine-line-height);
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.alpine-chat-input::-webkit-scrollbar {
+  display: none;
+}
+
+.alpine-chat-input::placeholder {
+  color: var(--alpine-text-secondary);
+}
+
+/* Bouton d'envoi */
+.alpine-chat-send {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: var(--alpine-primary);
+  color: white;
+  border-radius: var(--alpine-radius-full);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--alpine-transition-fast);
+  flex-shrink: 0;
+  outline: none;
+}
+
+.alpine-chat-send:disabled {
+  background: var(--alpine-border);
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.alpine-chat-send:not(:disabled):hover {
+  background: var(--alpine-primary-dark);
+  transform: scale(1.05);
+  box-shadow: var(--alpine-shadow-md);
+}
+
+.alpine-chat-send:not(:disabled):active {
+  transform: scale(0.95);
+}
+
+.alpine-chat-send:focus {
+  outline: 2px solid var(--alpine-primary-light);
+  outline-offset: 2px;
+}
+
+.alpine-chat-send svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Footer du chat */
+.alpine-chat-footer {
+  padding: var(--alpine-spacing-sm) var(--alpine-spacing-xl);
+  text-align: center;
+  font-size: 11px;
+  color: var(--alpine-text-secondary);
+  border-top: 1px solid var(--alpine-border);
+  background: var(--alpine-bg);
+}
+
+.alpine-powered-by {
+  opacity: 0.8;
+}
+
+.alpine-powered-by strong {
+  color: var(--alpine-primary);
+  font-weight: 600;
+}
+
+/* Animations d'entrée/sortie */
+.alpine-widget-fade-in {
+  animation: alpine-fade-in 0.3s ease-out;
+}
+
+.alpine-widget-fade-out {
+  animation: alpine-fade-out 0.2s ease-in;
+}
+
+@keyframes alpine-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes alpine-fade-out {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+}
+
+/* États de chargement */
+.alpine-widget-loading .alpine-chat-send {
+  pointer-events: none;
+}
+
+.alpine-widget-loading .alpine-chat-send svg {
+  animation: alpine-spin 1s linear infinite;
+}
+
+@keyframes alpine-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive design */
+@media (max-width: 480px) {
+  #alpine-guide-widget {
+    bottom: var(--alpine-spacing-lg) !important;
+    right: var(--alpine-spacing-lg) !important;
+    left: var(--alpine-spacing-lg) !important;
+    top: auto !important;
+  }
+  
+  .alpine-chat-container {
+    width: 100% !important;
+    height: 70vh !important;
+    max-height: 600px !important;
+    bottom: 80px !important;
+    right: 0 !important;
+    left: 0 !important;
+  }
+  
+  .alpine-chat-header {
+    padding: var(--alpine-spacing-md) var(--alpine-spacing-lg);
+  }
+  
+  .alpine-chat-messages {
+    padding: var(--alpine-spacing-lg);
+  }
+  
+  .alpine-chat-input-container {
+    padding: var(--alpine-spacing-md) var(--alpine-spacing-lg);
+  }
+}
+
+@media (max-width: 320px) {
+  .alpine-chat-container {
+    height: 80vh !important;
+  }
+  
+  .alpine-message {
+    max-width: 90%;
+  }
+  
+  .alpine-suggestions {
+    padding: var(--alpine-spacing-sm) var(--alpine-spacing-lg);
+  }
+}
+
+/* Mode haute résolution */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .alpine-trigger {
+    box-shadow: var(--alpine-shadow-xl);
+  }
+  
+  .alpine-chat-container {
+    border-width: 0.5px;
+  }
+}
+
+/* Préférences d'accessibilité */
+@media (prefers-reduced-motion: reduce) {
+  .alpine-trigger,
+  .alpine-chat-close,
+  .alpine-chat-send,
+  .alpine-suggestion,
+  .alpine-message,
+  .alpine-typing-indicator,
+  .alpine-suggestions {
+    animation: none !important;
+    transition: none !important;
+  }
+  
+  .alpine-widget-fade-in,
+  .alpine-widget-fade-out {
+    animation: none !important;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .alpine-widget-theme-auto {
+    --alpine-bg: var(--alpine-bg-dark);
+    --alpine-surface: var(--alpine-surface-dark);
+    --alpine-text: var(--alpine-text-dark);
+    --alpine-text-secondary: var(--alpine-text-secondary-dark);
+    --alpine-border: var(--alpine-border-dark);
+  }
+}
+
+/* Focus visible pour l'accessibilité */
+@media (prefers-reduced-motion: no-preference) {
+  .alpine-trigger:focus-visible,
+  .alpine-chat-close:focus-visible,
+  .alpine-chat-send:focus-visible,
+  .alpine-suggestion:focus-visible {
+    outline: 2px solid var(--alpine-primary);
+    outline-offset: 2px;
+  }
+}
+
+/* Print styles */
+@media print {
+  #alpine-guide-widget {
+    display: none !important;
+  }
+}

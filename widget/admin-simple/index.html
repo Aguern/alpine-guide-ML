@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alpine Guide Widget - Configuration</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: #f8fafc;
+            color: #1e293b;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .nav-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        
+        .nav-btn.active {
+            background: #3b82f6;
+            color: white;
+        }
+        
+        .nav-btn:not(.active) {
+            background: white;
+            color: #475569;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .nav-btn:hover:not(.active) {
+            background: #f1f5f9;
+        }
+        
+        h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #0f172a;
+            margin-bottom: 0.5rem;
+        }
+        
+        .subtitle {
+            color: #64748b;
+            font-size: 1rem;
+        }
+        
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 2rem;
+        }
+        
+        .config-panel, .preview-panel {
+            background: white;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            padding: 2rem;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+        }
+        
+        .section {
+            margin-bottom: 2rem;
+        }
+        
+        .section:last-child {
+            margin-bottom: 0;
+        }
+        
+        .section-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #1e293b;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .field {
+            margin-bottom: 1rem;
+        }
+        
+        .field label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+            color: #374151;
+        }
+        
+        .field input,
+        .field select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+            background: white;
+        }
+        
+        .field input:focus,
+        .field select:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .field input[type="color"] {
+            height: 40px;
+            cursor: pointer;
+        }
+        
+        .switch {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .switch input[type="checkbox"] {
+            width: auto;
+            margin: 0;
+        }
+        
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: 1px solid transparent;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+        
+        .btn-primary {
+            background: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+        }
+        
+        .btn-primary:hover {
+            background: #2563eb;
+            border-color: #2563eb;
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: #475569;
+            border-color: #e2e8f0;
+        }
+        
+        .btn-secondary:hover {
+            background: #f8fafc;
+            border-color: #cbd5e1;
+        }
+        
+        .actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+        
+        .preview-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #1e293b;
+        }
+        
+        .preview-container {
+            border: 2px dashed #e2e8f0;
+            border-radius: 8px;
+            height: 400px;
+            background: #f8fafc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+            text-align: center;
+            position: relative;
+        }
+        
+        .code-section {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .code-section h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #1e293b;
+        }
+        
+        .code-block {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 1rem;
+            border-radius: 6px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.75rem;
+            overflow-x: auto;
+            white-space: pre;
+        }
+        
+        .copy-btn {
+            background: #6b7280;
+            color: white;
+            border: none;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            margin-top: 0.5rem;
+        }
+        
+        .copy-btn:hover {
+            background: #4b5563;
+        }
+        
+        .alert {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            font-size: 0.875rem;
+        }
+        
+        .alert-info {
+            background: #dbeafe;
+            color: #1e40af;
+            border: 1px solid #93c5fd;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .main-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            nav {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .nav-btn {
+                width: 200px;
+                text-align: center;
+            }
+            
+            .actions {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <nav>
+                <a href="index.html" class="nav-btn active">⚙️ Configuration</a>
+                <a href="demo.html" class="nav-btn">🎯 Démo</a>
+            </nav>
+            <h1>Alpine Guide Widget</h1>
+            <p class="subtitle">Configuration simple pour votre widget touristique</p>
+        </header>
+
+        <div class="main-grid">
+            <!-- Configuration -->
+            <div class="config-panel">
+                <div class="section">
+                    <h2 class="section-title">🏔️ Territoire</h2>
+                    <div class="field">
+                        <label for="territory">Nom du territoire</label>
+                        <input type="text" id="territory" value="annecy" placeholder="Ex: annecy">
+                    </div>
+                    <div class="field">
+                        <label for="apiKey">Clé API</label>
+                        <input type="text" id="apiKey" placeholder="Votre clé API" required>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h2 class="section-title">🎨 Apparence</h2>
+                    <div class="field">
+                        <label for="primaryColor">Couleur principale</label>
+                        <input type="color" id="primaryColor" value="#3b82f6">
+                    </div>
+                    <div class="field">
+                        <label for="position">Position</label>
+                        <select id="position">
+                            <option value="bottom-right">Bas droite</option>
+                            <option value="bottom-left">Bas gauche</option>
+                            <option value="top-right">Haut droite</option>
+                            <option value="top-left">Haut gauche</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label for="theme">Thème</label>
+                        <select id="theme">
+                            <option value="light">Clair</option>
+                            <option value="dark">Sombre</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h2 class="section-title">⚙️ Comportement</h2>
+                    <div class="field">
+                        <div class="switch">
+                            <input type="checkbox" id="autoOpen">
+                            <label for="autoOpen">Ouverture automatique</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="actions">
+                    <button class="btn btn-primary" onclick="generateCode()">Générer le code</button>
+                    <button class="btn btn-secondary" onclick="testWidget()">Tester</button>
+                </div>
+            </div>
+
+            <!-- Prévisualisation -->
+            <div class="preview-panel">
+                <h3 class="preview-title">Prévisualisation</h3>
+                <div class="preview-container" id="previewContainer">
+                    <p>Cliquez sur "Tester" pour voir le widget</p>
+                </div>
+
+                <div class="code-section" id="codeSection" style="display: none;">
+                    <h3>Code d'intégration</h3>
+                    <div class="alert alert-info">
+                        Copiez ce code dans votre site web :
+                    </div>
+                    <div class="code-block" id="generatedCode"></div>
+                    <button class="copy-btn" onclick="copyCode()">Copier</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let widgetInstance = null;
+
+        function generateCode() {
+            const territory = document.getElementById('territory').value || 'annecy';
+            const apiKey = document.getElementById('apiKey').value;
+            const primaryColor = document.getElementById('primaryColor').value;
+            const position = document.getElementById('position').value;
+            const theme = document.getElementById('theme').value;
+            const autoOpen = document.getElementById('autoOpen').checked;
+
+            if (!apiKey) {
+                alert('Veuillez saisir une clé API');
+                return;
+            }
+
+            const code = `<script src="../widget/alpine-guide-widget.js"
+        data-territory="${territory}"
+        data-api-key="${apiKey}"
+        data-position="${position}"
+        data-theme="${theme}"
+        data-primary-color="${primaryColor}"
+        data-auto-open="${autoOpen}">
+<\/script>`;
+
+            document.getElementById('generatedCode').textContent = code;
+            document.getElementById('codeSection').style.display = 'block';
+        }
+
+        function testWidget() {
+            const territory = document.getElementById('territory').value || 'annecy';
+            const apiKey = document.getElementById('apiKey').value;
+
+            if (!apiKey) {
+                alert('Veuillez saisir une clé API pour tester');
+                return;
+            }
+
+            // Remove existing widget
+            if (widgetInstance) {
+                const existing = document.querySelector('.alpine-guide-widget-container');
+                if (existing) existing.remove();
+            }
+
+            // Add new widget script
+            const script = document.createElement('script');
+            script.src = '../widget/alpine-guide-widget.js';
+            script.setAttribute('data-territory', territory);
+            script.setAttribute('data-api-key', apiKey);
+                script.setAttribute('data-position', document.getElementById('position').value);
+            script.setAttribute('data-theme', document.getElementById('theme').value);
+            script.setAttribute('data-primary-color', document.getElementById('primaryColor').value);
+            script.setAttribute('data-auto-open', document.getElementById('autoOpen').checked);
+
+            document.body.appendChild(script);
+
+            document.getElementById('previewContainer').innerHTML = 
+                '<p style="color: #10b981;">✅ Widget chargé ! Regardez en bas à droite.</p>';
+        }
+
+        function copyCode() {
+            const code = document.getElementById('generatedCode').textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                const btn = document.querySelector('.copy-btn');
+                const originalText = btn.textContent;
+                btn.textContent = 'Copié !';
+                btn.style.background = '#10b981';
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.style.background = '#6b7280';
+                }, 2000);
+            });
+        }
+
+        // Auto-generate code when fields change
+        document.querySelectorAll('input, select').forEach(element => {
+            element.addEventListener('change', () => {
+                if (document.getElementById('apiKey').value) {
+                    generateCode();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

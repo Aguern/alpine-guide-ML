@@ -1,0 +1,144 @@
+# Configuration territoire Chambéry pour Alpine Guide Widget
+territory:
+  slug: chambery
+  name: "Chambéry - Cœur de Savoie"
+  description: "Capitale historique de la Savoie, porte d'entrée des Alpes"
+  
+  # PLANS D'EAU ET TEMPÉRATURES
+  waterBodies:
+    primary:
+      name: "Lac du Bourget"
+      type: "grand_lac_naturel"
+      description: "Plus grand lac naturel de France"
+      coordinates: [45.7150, 5.8644]
+      characteristics:
+        altitude: 231
+        surface: 44.5 # km²
+        profondeur_max: 145
+        profondeur_moyenne: 85
+        volume: 3500000000 # m³
+        longueur: 18
+        largeur: 3.5
+      
+      # Températures saisonnières - grand lac tempéré
+      temperatures:
+        hiver: # Décembre-Février
+          min: 5
+          max: 9
+          typical: 7
+          confidence: "élevée"
+          notes: "Lac jamais gelé, inertie thermique importante"
+          
+        printemps: # Mars-Mai  
+          min: 9
+          max: 16
+          typical: 12
+          confidence: "élevée"
+          notes: "Réchauffement lent mais régulier"
+          
+        ete: # Juin-Août
+          min: 20
+          max: 26
+          typical: 23
+          confidence: "élevée" 
+          notes: "Excellent pour baignade, peut atteindre 27°C en surface"
+          
+        automne: # Septembre-Novembre
+          min: 14
+          max: 20
+          typical: 17
+          confidence: "élevée"
+          notes: "Reste chaud longtemps grâce à sa profondeur"
+      
+      # Zones de baignade spécifiques
+      swimmingAreas:
+        - name: "Plage de Mémard"
+          coordinates: [45.6889, 5.8528]
+          characteristics: ["surveillée", "aménagée", "restaurant"]
+          temperature_modifier: 0
+          
+        - name: "Plage de Châtillon"
+          coordinates: [45.7306, 5.8139]
+          characteristics: ["grande_plage", "parking", "sports_nautiques"]
+          temperature_modifier: +1 # Baie plus protégée
+          
+        - name: "Conjux - Plage du Petit Port"
+          coordinates: [45.7847, 5.8833]
+          characteristics: ["familiale", "peu_profonde"]
+          temperature_modifier: +2 # Zone moins profonde, se réchauffe plus
+          
+        - name: "Aix-les-Bains - Plage municipale"
+          coordinates: [45.6889, 5.8528]
+          characteristics: ["urbaine", "équipements", "thermes_proche"]
+          temperature_modifier: 0
+    
+    secondary:
+      - name: "Lac d'Aiguebelette"
+        type: "lac_alpin_moyen"
+        coordinates: [45.5500, 5.7833]
+        temperatures:
+          hiver: {min: 4, max: 8, typical: 6}
+          printemps: {min: 10, max: 16, typical: 13}
+          ete: {min: 20, max: 25, typical: 22}
+          automne: {min: 13, max: 18, typical: 16}
+        characteristics:
+          altitude: 373
+          surface: 5.45
+          profondeur_max: 71
+          note: "Plus petit que Bourget, se réchauffe plus vite"
+          
+      - name: "Rivière Leysse"
+        type: "riviere_plaine"
+        coordinates: [45.5644, 5.9178]
+        temperatures:
+          hiver: {min: 4, max: 8, typical: 6}
+          printemps: {min: 8, max: 14, typical: 11}
+          ete: {min: 16, max: 22, typical: 19}
+          automne: {min: 10, max: 16, typical: 13}
+        characteristics:
+          source: "massif_des_bauges"
+          debit: "modéré"
+          note: "Traverse Chambéry, température modérée"
+          
+      - name: "Lac de la Thuile"
+        type: "petit_lac_montagne"
+        coordinates: [45.6167, 6.6833]
+        temperatures:
+          hiver: {min: 1, max: 5, typical: 3}
+          printemps: {min: 6, max: 12, typical: 9}
+          ete: {min: 15, max: 20, typical: 17}
+          automne: {min: 8, max: 14, typical: 11}
+        characteristics:
+          altitude: 1260
+          surface: 0.92
+          note: "Lac de montagne, plus froid que lacs de plaine"
+          
+  # Configuration géographique
+  geography:
+    center:
+      lat: 45.5646
+      lng: 5.9178
+    bounds:
+      north: 45.8000
+      south: 45.4000  
+      east: 6.2000
+      west: 5.6000
+      
+  # Langues supportées
+  languages:
+    default: "fr"
+    supported: ["fr", "en", "de", "it"]
+    
+  # Fonctionnalités
+  features:
+    core:
+      chat: 
+        enabled: true
+      weather:
+        enabled: true
+      activities:
+        enabled: true
+        categories: ["nautique", "randonnee", "culturel", "thermalisme"]
+      water_temperature:
+        enabled: true
+        speciality: "Plus grand lac naturel de France avec excellentes conditions de baignade"

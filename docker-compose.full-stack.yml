@@ -1,0 +1,218 @@
+# Alpine Guide - Full Stack Platform
+# ML Scoring Engine + Conversational AI Widget
+version: '3.8'
+
+services:
+  # ====================================
+  # Backend ML - API de scoring POI
+  # ====================================
+  ml-api:
+    build:
+      context: ./backend
+      dockerfile: ../infrastructure/docker/Dockerfile.backend
+    container_name: alpine-ml-api
+    restart: unless-stopped
+    environment:
+      - REDIS_URL=redis://redis:6379
+      - API_HOST=0.0.0.0
+      - API_PORT=8000
+      - API_WORKERS=4
+      - LOG_LEVEL=info
+      - ENVIRONMENT=production
+      - DEBUG=false
+    ports:
+      - "8000:8000"
+    depends_on:
+      - redis
+    volumes:
+      - ./backend/ml:/app/ml:ro
+      - ./backend/data:/app/data:ro
+      - ./logs/ml-api:/app/logs
+    networks:
+      - alpine-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # ====================================
+  # Backend Chatbot - Orchestrateur IA
+  # ====================================
+  chatbot-api:
+    build:
+      context: ./backend
+      dockerfile: ../infrastructure/docker/Dockerfile.chatbot
+    container_name: alpine-chatbot-api
+    restart: unless-stopped
+    environment:
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - OPENWEATHER_API_KEY=${OPENWEATHER_API_KEY:-}
+      - REDIS_URL=redis://redis:6379
+      - ML_API_URL=http://ml-api:8000
+      - API_HOST=0.0.0.0
+      - API_PORT=8001
+      - LOG_LEVEL=info
+      - ENVIRONMENT=production
+    ports:
+      - "8001:8001"
+    depends_on:
+      - redis
+      - ml-api
+    volumes:
+      - ./backend/core:/app/core:ro
+      - ./backend/config:/app/config:ro
+      - ./logs/chatbot-api:/app/logs
+    networks:
+      - alpine-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # ====================================
+  # Cache Redis
+  # ====================================
+  redis:
+    image: redis:7-alpine
+    container_name: alpine-redis
+    restart: unless-stopped
+    command: >
+      redis-server
+      --appendonly yes
+      --appendfsync everysec
+      --maxmemory 512mb
+      --maxmemory-policy allkeys-lru
+      --save 900 1
+      --save 300 10
+      --save 60 10000
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - alpine-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ====================================
+  # Frontend - Widget & Admin
+  # ====================================
+  web:
+    build:
+      context: ./widget
+      dockerfile: ../infrastructure/docker/Dockerfile.web
+    container_name: alpine-web
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - ml-api
+      - chatbot-api
+    volumes:
+      - ./widget/dist:/usr/share/nginx/html/widget:ro
+      - ./widget/admin-simple:/usr/share/nginx/html/admin:ro
+      - ./infrastructure/docker/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./logs/nginx:/var/log/nginx
+    networks:
+      - alpine-network
+    environment:
+      - ML_API_UPSTREAM=ml-api:8000
+      - CHATBOT_API_UPSTREAM=chatbot-api:8001
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # ====================================
+  # Dashboard Streamlit (Analytics ML)
+  # ====================================
+  dashboard:
+    build:
+      context: ./backend
+      dockerfile: ../infrastructure/docker/Dockerfile.dashboard
+    container_name: alpine-dashboard
+    restart: unless-stopped
+    ports:
+      - "8501:8501"
+    depends_on:
+      - ml-api
+    volumes:
+      - ./dashboard:/app/dashboard:ro
+      - ./backend/data:/app/data:ro
+    networks:
+      - alpine-network
+    environment:
+      - ML_API_URL=http://ml-api:8000
+    profiles:
+      - analytics
+
+  # ====================================
+  # Monitoring - Prometheus
+  # ====================================
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: alpine-prometheus
+    restart: unless-stopped
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./infrastructure/monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.enable-lifecycle'
+    networks:
+      - alpine-network
+    profiles:
+      - monitoring
+
+  # ====================================
+  # Monitoring - Grafana
+  # ====================================
+  grafana:
+    image: grafana/grafana:latest
+    container_name: alpine-grafana
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD:-admin123}
+      - GF_USERS_ALLOW_SIGN_UP=false
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./infrastructure/monitoring/grafana:/etc/grafana/provisioning:ro
+    depends_on:
+      - prometheus
+    networks:
+      - alpine-network
+    profiles:
+      - monitoring
+
+# ====================================
+# Volumes persistants
+# ====================================
+volumes:
+  redis-data:
+    driver: local
+  prometheus-data:
+    driver: local
+  grafana-data:
+    driver: local
+
+# ====================================
+# Réseau interne
+# ====================================
+networks:
+  alpine-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16

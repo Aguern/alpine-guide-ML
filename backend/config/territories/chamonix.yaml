@@ -1,0 +1,134 @@
+# Configuration territoire Chamonix pour Alpine Guide Widget
+territory:
+  slug: chamonix
+  name: "Chamonix Mont-Blanc"
+  description: "Capitale mondiale de l'alpinisme et des sports de montagne"
+  
+  # PLANS D'EAU ET TEMPÉRATURES
+  waterBodies:
+    primary:
+      name: "Rivière Arve"
+      type: "riviere_alpine"
+      description: "Rivière glaciaire principale de la vallée de Chamonix"
+      coordinates: [45.9237, 6.8694]
+      characteristics:
+        altitude: 1035 # à Chamonix centre
+        source: "glaciers_mont_blanc"
+        longueur: 102 # km total
+        debit_moyen: 76 # m³/s
+        regime: "glaciaire"
+      
+      # Températures saisonnières - rivière glaciaire
+      temperatures:
+        hiver: # Décembre-Février
+          min: 0
+          max: 4
+          typical: 2
+          confidence: "bonne"
+          notes: "Très froide, débit minimal, risque de gel"
+          
+        printemps: # Mars-Mai  
+          min: 3
+          max: 8
+          typical: 5
+          confidence: "bonne"
+          notes: "Fonte des neiges, débit important, eau très froide"
+          
+        ete: # Juin-Août
+          min: 8
+          max: 14
+          typical: 11
+          confidence: "bonne" 
+          notes: "Maximum annuel mais reste froide, fonte glaciaire"
+          
+        automne: # Septembre-Novembre
+          min: 4
+          max: 9
+          typical: 6
+          confidence: "bonne"
+          notes: "Refroidissement rapide, débit variable"
+      
+      # Points d'accès spécifiques
+      accessPoints:
+        - name: "Pont de l'Arve - Centre Chamonix"
+          coordinates: [45.9237, 6.8694]
+          characteristics: ["accès_facile", "parking_proche"]
+          temperature_modifier: 0
+          warning: "Courant fort, baignade déconseillée"
+          
+        - name: "Les Gaillands"
+          coordinates: [45.9308, 6.8519]
+          characteristics: ["zone_calme", "piscine_naturelle"]
+          temperature_modifier: +1
+          warning: "Vérifier conditions météo"
+    
+    secondary:
+      - name: "Lac des Gaillands"
+        type: "lac_artificiel"
+        coordinates: [45.9308, 6.8519]
+        temperatures:
+          hiver: {min: 1, max: 5, typical: 3}
+          printemps: {min: 6, max: 12, typical: 9}
+          ete: {min: 15, max: 21, typical: 18}
+          automne: {min: 8, max: 14, typical: 11}
+        characteristics:
+          altitude: 1100
+          surface: 0.05
+          profondeur_max: 8
+          usage: "baignade_autorisée_été"
+          
+      - name: "Torrent du Diosaz"
+        type: "torrent_montagne"
+        coordinates: [46.0089, 6.9525]
+        temperatures:
+          hiver: {min: 0, max: 3, typical: 1}
+          printemps: {min: 2, max: 6, typical: 4}
+          ete: {min: 6, max: 10, typical: 8}
+          automne: {min: 3, max: 7, typical: 5}
+        characteristics:
+          altitude: 1400
+          regime: "torrentiel"
+          note: "Très froid toute l'année, baignade extrême uniquement"
+          
+      - name: "Lac Blanc"
+        type: "lac_haute_montagne"
+        coordinates: [45.9775, 6.8775]
+        temperatures:
+          hiver: {min: 0, max: 2, typical: 0}
+          printemps: {min: 2, max: 6, typical: 4}
+          ete: {min: 8, max: 12, typical: 10}
+          automne: {min: 3, max: 7, typical: 5}
+        characteristics:
+          altitude: 2352
+          acces: "téléphérique + randonnée"
+          note: "Lac d'altitude, gelé une partie de l'année"
+          
+  # Configuration géographique
+  geography:
+    center:
+      lat: 45.9237
+      lng: 6.8694
+    bounds:
+      north: 46.0500
+      south: 45.8500  
+      east: 7.0500
+      west: 6.7000
+      
+  # Langues supportées
+  languages:
+    default: "fr"
+    supported: ["fr", "en", "de", "it"]
+    
+  # Fonctionnalités
+  features:
+    core:
+      chat: 
+        enabled: true
+      weather:
+        enabled: true
+      activities:
+        enabled: true
+        categories: ["alpinisme", "ski", "randonnee", "escalade"]
+      water_temperature:
+        enabled: true
+        warning_message: "⚠️ Eaux de montagne très froides - baignade à vos risques et périls"
