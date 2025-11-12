@@ -252,49 +252,412 @@ async def score_poi(poi_data: POIScoreRequest):
 
 ### Rôle dans le système
 
-Le widget démontre l'utilisation concrète des scores ML dans une application utilisateur. Il intègre un orchestrateur IA (Gemini 2.0 Flash) qui utilise les prédictions pour prioriser les recommandations.
+Le widget démontre l'utilisation concrète des scores ML dans une application utilisateur. Il intègre un orchestrateur IA (Gemini 2.0 Flash) qui utilise les prédictions pour prioriser les recommandations touristiques.
 
-### Architecture
+**Pourquoi ce composant dans un projet ML ?**
 
-**Backend (backend/core/)** :
-- Orchestrateur Gemini 2.0 Flash
-- Détection d'intentions (config YAML 386 lignes)
-- RAG avec données locales
-- Cache Redis par type de requête
+Dans un projet ML réel, le modèle n'est qu'une brique technique. Le widget montre comment exploiter les prédictions dans un produit utilisateur complet, avec gestion de contexte, enrichissement multi-sources et interface naturelle.
 
-**Frontend (widget/)** :
-- JavaScript vanilla (<50KB)
-- Configuration multi-tenant
-- Embeddable (1 ligne de code)
-- Responsive design
+### Architecture détaillée
+
+Le système repose sur 3 couches interdépendantes :
+
+#### 1. Frontend JavaScript (widget/)
+
+**Composant embeddable autonome** :
+```javascript
+// alpine-guide-widget.js (800+ lignes)
+class AlpineGuideWidget {
+    constructor(config) {
+        this.config = {
+            territory: 'annecy',      // Configuration multi-tenant
+            apiBase: 'https://...',   // Backend conversationnel
+            primaryColor: '#0066CC',   // Personnalisation visuelle
+            persistHistory: true       // Persistance localStorage
+        };
+        this.state = {
+            sessionId: generateSessionId(),
+            conversations: [],
+            isTyping: false
+        };
+    }
+
+    async init() {
+        await this.loadTerritoryConfig();  // Charge config YAML
+        this.createWidget();                // Injecte DOM + CSS
+        this.attachEvents();                // Listeners user input
+    }
+}
+```
+
+**Cycle de vie du widget** :
+1. **Chargement** : Script injecté dans page hôte (`<script src="...">`)
+2. **Initialisation** : Récupération config territoire depuis backend
+3. **Rendu** : Injection HTML/CSS dans shadow DOM (isolation styles)
+4. **Connexion** : WebSocket ou polling vers API chatbot (:8001)
+5. **Interaction** : Capture input → envoi backend → affichage réponse
+6. **Persistance** : Sauvegarde historique dans localStorage
+
+**Fonctionnalités clés** :
+- Auto-complétion et suggestions contextuelles
+- Indicateur de frappe temps réel
+- Gestion offline (cache local)
+- Thèmes clair/sombre automatiques
+- Responsive (mobile + desktop)
+- A11y (navigation clavier, ARIA labels)
+
+#### 2. Orchestrateur IA (backend/core/)
+
+**Cerveau du système conversationnel** :
+
+```python
+# orchestrator.py
+class YAMLOrchestrator:
+    def __init__(self, yaml_path, gemini_api_key, rag_service,
+                 weather_service, supabase_service):
+        self.intents = self._load_intents_from_yaml(yaml_path)
+        self.model = genai.GenerativeModel('gemini-2.0-flash')
+        self.rag_service = rag_service
+        # ... autres services
+
+    async def process_message(self, user_message, conversation_state):
+        # 1. Détection d'intent via Gemini
+        intent = await self._detect_intent(user_message)
+
+        # 2. Extraction des slots (entités)
+        slots = await self._extract_slots(user_message, intent)
+
+        # 3. Appel services externes selon intent
+        if intent == 'restaurant':
+            pois = await self.rag_service.search_pois(
+                type='restaurant',
+                location=slots['localisation']
+            )
+            # Filtrage par score ML
+            pois = [p for p in pois if p.quality_score >= 70]
+
+        # 4. Génération réponse enrichie
+        response = await self._generate_response(intent, slots, pois)
+        return response
+```
+
+**Pipeline de traitement NLU** :
+
+| Étape | Technique | Exemple |
+|-------|-----------|---------|
+| **Normalisation** | Lowercase, accents | "Où MANGER ?" → "ou manger" |
+| **Détection intent** | Gemini 2.0 Flash | "restaurant italien" → `intent: restaurant` |
+| **Extraction slots** | NER + patterns | "demain à Annecy" → `{date: 2025-11-13, localisation: Annecy}` |
+| **Validation** | Contraintes YAML | Slots obligatoires présents ? |
+| **Clarification** | Templates YAML | Manque slot → "Dans quel secteur ?" |
+| **Enrichissement** | APIs externes | Ajout météo, température eau |
+| **Génération** | Gemini contextuel | Réponse naturelle structurée |
+
+**Configuration des intents (intents_slots.yaml - 386 lignes)** :
+
+```yaml
+intents:
+  restaurant:
+    description: "Recherche de restaurants"
+    slots_obligatoires: []
+    slots_optionnels:
+      - localisation
+      - type_cuisine
+      - budget
+      - regime_alimentaire
+    exemple_demande_clarification:
+      - utilisateur: "Je cherche un restaurant"
+        clarification: "Dans quel secteur et pour quelle date ?"
+
+  water_temperature:
+    description: "Température de l'eau des lacs"
+    slots_obligatoires:
+      - plan_eau
+    slots_optionnels:
+      - localisation
+      - date
+```
+
+**17 intents implémentés** : météo, restaurant, randonnée, ski, baignade, événements, musées, transports, urgences, etc.
+
+#### 3. Configuration multi-tenant (backend/config/territories/)
+
+**Un fichier YAML par territoire** (annecy.yaml, chambery.yaml, chamonix.yaml) :
+
+```yaml
+# annecy.yaml (597 lignes)
+territory:
+  slug: annecy
+  name: "Annecy - Lac et Montagnes"
+
+  # Branding (identité visuelle complète)
+  branding:
+    appName: "Explore Annecy"
+    colors:
+      primary: "#0066CC"    # Bleu lac
+      accent: "#FF6B35"     # Orange montagne
+    assets:
+      logo: "https://cdn.../logo-annecy.svg"
+      chatAvatar: "https://cdn.../avatar-guide.png"
+
+  # Géographie (coordonnées, limites, landmarks)
+  geography:
+    center: {lat: 45.8992, lng: 6.1294}
+    bounds:
+      north: 46.0500
+      south: 45.7500
+    landmarks:
+      - name: "Lac d'Annecy"
+        coordinates: [45.8631, 6.1639]
+        type: "natural"
+
+  # Personnalité IA
+  ai:
+    personality:
+      tone: "chaleureux et expert local"
+      style: "conversationnel et informatif"
+    specialties:
+      - name: "Lac d'Annecy"
+        keywords: ["lac", "baignade", "pédalo"]
+      - name: "Gastronomie savoyarde"
+        keywords: ["reblochon", "tartiflette"]
+
+  # Plans d'eau avec températures saisonnières
+  waterBodies:
+    primary:
+      name: "Lac d'Annecy"
+      temperatures:
+        ete: {min: 18, max: 24, typical: 21}
+        hiver: {min: 4, max: 7, typical: 5}
+
+  # Suggestions intelligentes par contexte
+  smartSuggestions:
+    byIntent:
+      restaurant:
+        - "Restaurant vue lac ?"
+        - "Spécialités savoyardes ?"
+```
+
+**Isolation multi-tenant** :
+- Chaque territoire = config indépendante
+- Données POIs filtrées par géographie
+- Branding personnalisé (couleurs, logo, messages)
+- Intents activés/désactivés par territoire
+- Quotas et analytics séparés
 
 ### Intégration ML → Widget
 
-Flux de données typique :
+**Flux complet d'une requête utilisateur** :
 
-1. Utilisateur : "Quels restaurants à Annecy ?"
-2. Orchestrateur détecte intention `search_restaurant`
-3. Appel API ML : récupération POIs avec scores
-4. Filtre : garde uniquement scores >70/100
-5. Tri par score décroissant
-6. Enrichissement IA (météo, distance)
-7. Réponse structurée à l'utilisateur
+```
+┌─────────────┐
+│ Utilisateur │ "Quels restaurants à Annecy ?"
+└──────┬──────┘
+       │
+       ▼
+┌────────────────────┐
+│ Widget JavaScript  │ Envoi POST /chat
+└──────┬─────────────┘
+       │
+       ▼
+┌──────────────────────┐
+│ Orchestrateur (core) │
+├──────────────────────┤
+│ 1. Détection intent  │ → Gemini 2.0 Flash : "restaurant"
+│ 2. Extraction slots  │ → {localisation: "Annecy"}
+│ 3. Appel RAG         │ → Supabase : récup 50 restaurants Annecy
+└──────┬───────────────┘
+       │
+       ▼
+┌────────────────────┐
+│ API ML Scoring     │ POST /score-batch
+├────────────────────┤
+│ Input: 50 POIs     │
+│ Output: scores     │ [POI1: 85/100, POI2: 72/100, POI3: 45/100, ...]
+└──────┬─────────────┘
+       │
+       ▼
+┌──────────────────────┐
+│ Filtrage ML (core)   │
+├──────────────────────┤
+│ • Garde score >= 70  │ → 18 restaurants conservés
+│ • Tri décroissant    │ → [POI1: 85, POI2: 72, ...]
+└──────┬───────────────┘
+       │
+       ▼
+┌──────────────────────┐
+│ Enrichissement       │
+├──────────────────────┤
+│ • Météo API          │ → "Temps ensoleillé 22°C"
+│ • Température eau    │ → "Lac d'Annecy : 21°C"
+│ • Distance GPS       │ → Calcul si user_location disponible
+└──────┬───────────────┘
+       │
+       ▼
+┌──────────────────────┐
+│ Génération (Gemini)  │ Prompt enrichi avec POIs + contexte
+├──────────────────────┤
+│ "Voici 3 excellents  │
+│ restaurants avec une │
+│ belle vue sur le lac │
+│ (parfait avec ce     │
+│ temps ensoleillé!) : │
+│                      │
+│ 1. La Voile (85/100) │
+│    - Vue panoramique │
+│    - Spécialités lac │
+│ ..."                 │
+└──────┬───────────────┘
+       │
+       ▼
+┌────────────────────┐
+│ Widget JavaScript  │ Affichage réponse formatée
+└────────────────────┘
+```
 
-**Configuration territoire :**
+**Paramètres d'intégration ML configurables** :
+
 ```yaml
-# backend/config/territories/annecy.yaml
+# Dans chaque fichier territoire
 ml_integration:
   scoring_api: "http://ml-api:8000"
-  min_quality_score: 70
-  boost_high_quality: true
+  min_quality_score: 70           # Seuil de filtrage
+  boost_high_quality: true        # Prioriser scores >85
+  max_results: 5                  # Top-N après tri
+  score_weight: 0.4               # Pondération ML vs distance
+  explain_scores: false           # Afficher scores à user ?
 ```
 
-**Intégration :**
-```html
-<script src="https://your-domain.com/alpine-guide-widget.js"
-        data-territory="annecy"
-        data-api-key="your-key"></script>
+### Exemples de conversations réelles
+
+**Exemple 1 : Recherche restaurant**
+
 ```
+User: "Un bon restaurant italien pas trop cher à Annecy"
+
+Widget → Backend:
+{
+  "message": "Un bon restaurant italien pas trop cher à Annecy",
+  "session_id": "sess_abc123",
+  "territory": "annecy"
+}
+
+Backend processing:
+- Intent: restaurant
+- Slots: {cuisine: "italien", budget: "moyen", localisation: "Annecy"}
+- RAG: 12 restaurants italiens trouvés
+- ML scoring: [8 avec score >= 70]
+- Filtrage budget: 5 conservés
+- Tri: [La Trattoria: 82, Casa Mia: 78, ...]
+
+Bot: "Voici 3 trattorias authentiques à prix doux :
+
+1. **La Trattoria du Lac** (82/100)
+   📍 12 rue Perrière, Vieille Ville
+   💰 Menu 18-25€
+   ⭐ Pâtes fraîches maison, terrasse sur canal
+
+2. **Casa Mia** (78/100)
+   📍 5 rue Royale
+   💰 Pizzas 12-16€
+   ⭐ Four à bois, ingrédients bio
+
+Météo actuelle : ☀️ 22°C, parfait pour une terrasse !"
+```
+
+**Exemple 2 : Température eau + conseil**
+
+```
+User: "Il fait chaud l'eau du lac ?"
+
+Backend:
+- Intent: water_temperature
+- Slot: plan_eau → "lac d'Annecy" (inféré du territoire)
+- Service Hub'Eau: 21.2°C (mesure temps réel)
+- Contexte saisonnier (été): "température optimale"
+
+Bot: "🌡️ Température du lac d'Annecy : **21°C** (mesure actuelle)
+
+C'est parfait pour la baignade ! 🏊‍♂️
+
+Plages surveillées recommandées :
+• Plage des Marquisats (10 min centre-ville)
+• Plage d'Albigny (baie protégée, +1°C)
+
+Conseil : l'eau est encore plus chaude en surface l'après-midi ☀️"
+```
+
+**Exemple 3 : Clarification multi-tour**
+
+```
+User: "Je veux faire une randonnée"
+
+Bot: "Excellente idée ! Pour te conseiller au mieux :
+- Dans quel secteur ? (Semnoz, Parmelan, Tournette...)
+- Quelle durée ? (1h, demi-journée, journée)
+- Quel niveau ? (facile, moyen, difficile)"
+
+User: "Facile 2h max vers le Semnoz"
+
+Backend:
+- Intent: randonnee
+- Slots complétés: {localisation: "Semnoz", durée: "2h", difficulté: "facile"}
+- RAG: 8 randonnées trouvées
+- ML: filtrage scores >= 70 → 5 conservées
+- Météo: vérification conditions
+
+Bot: "Top 2 balades faciles au Semnoz (2h) :
+
+1. **Sentier des Crêtes** (Score: 88/100)
+   📍 Départ parking téléphérique
+   ⏱️ 1h45 boucle
+   📈 +150m dénivelé
+   🌄 Vue panoramique lac + Mont Blanc
+
+Météo : ☀️ Parfait aujourd'hui (22°C vallée, 18°C sommet)
+Conseil : Chaussures de marche suffisantes !"
+```
+
+### Configuration et déploiement
+
+**Intégration dans un site (1 ligne)** :
+
+```html
+<!-- Méthode 1 : Script tag simple -->
+<script src="https://cdn.alpine-guide.com/widget.js"
+        data-territory="annecy"
+        data-api-key="YOUR_API_KEY"></script>
+
+<!-- Méthode 2 : Configuration avancée -->
+<script>
+  window.AlpineGuideConfig = {
+    territory: 'annecy',
+    apiKey: 'YOUR_API_KEY',
+    theme: 'auto',           // light, dark, auto
+    position: 'bottom-right',
+    autoOpen: false,
+    language: 'fr',
+    primaryColor: '#0066CC',
+    onReady: (widget) => {
+      console.log('Widget prêt');
+    }
+  };
+</script>
+<script src="https://cdn.alpine-guide.com/widget.js"></script>
+```
+
+**Options de personnalisation disponibles** :
+
+| Option | Type | Description |
+|--------|------|-------------|
+| `territory` | string | Territoire (annecy, chambery, chamonix) |
+| `theme` | string | Thème visuel (light, dark, auto) |
+| `position` | string | Position (bottom-right, bottom-left, top-right) |
+| `primaryColor` | string | Couleur principale (#hex) |
+| `language` | string | Langue (fr, en, de, it, es) |
+| `autoOpen` | boolean | Ouverture auto après 5s |
+| `persistHistory` | boolean | Sauvegarde historique local |
+| `welcomeMessage` | string | Message d'accueil personnalisé |
 
 ---
 
