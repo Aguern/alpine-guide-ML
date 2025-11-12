@@ -1,0 +1,62 @@
+[
+  {
+    "zone": "Zone 44.4,1.4",
+    "lat": 44.400000000000006,
+    "lon": 1.4000000000000001,
+    "type_manquant": "PlaceOfInterest",
+    "gap_pct": 9.587850180673895,
+    "n_pois_zone": 225,
+    "avg_quality_zone": 73.65480000000001,
+    "opportunity_score": 32.681580072269554,
+    "opportunity_level": "LOW",
+    "raison": "Gap de 9.6% vs national (18.5% attendu vs 8.9% réel)"
+  },
+  {
+    "zone": "Zone 50.4,2.8",
+    "lat": 50.400000000000006,
+    "lon": 2.8000000000000003,
+    "type_manquant": "PlaceOfInterest",
+    "gap_pct": 10.388503775445136,
+    "n_pois_zone": 272,
+    "avg_quality_zone": 67.24558823529412,
+    "opportunity_score": 32.48907798076629,
+    "opportunity_level": "LOW",
+    "raison": "Gap de 10.4% vs national (18.5% attendu vs 8.1% réel)"
+  },
+  {
+    "zone": "Zone 43.8,4.8",
+    "lat": 43.800000000000004,
+    "lon": 4.800000000000001,
+    "type_manquant": "PointOfInterest",
+    "gap_pct": 9.074597293515172,
+    "n_pois_zone": 239,
+    "avg_quality_zone": 71.79384937238493,
+    "opportunity_score": 32.33799372912155,
+    "opportunity_level": "LOW",
+    "raison": "Gap de 9.1% vs national (23.7% attendu vs 14.6% réel)"
+  },
+  {
+    "zone": "Zone 43.0,-0.0",
+    "lat": 43.0,
+    "lon": -0.0,
+    "type_manquant": "PointOfInterest",
+    "gap_pct": 7.372794911796471,
+    "n_pois_zone": 208,
+    "avg_quality_zone": 63.06403846153845,
+    "opportunity_score": 28.108329503180123,
+    "opportunity_level": "LOW",
+    "raison": "Gap de 7.4% vs national (23.7% attendu vs 16.3% réel)"
+  },
+  {
+    "zone": "Zone 43.4,-1.4",
+    "lat": 43.400000000000006,
+    "lon": -1.4000000000000001,
+    "type_manquant": "PlaceOfInterest",
+    "gap_pct": 6.500691165371167,
+    "n_pois_zone": 167,
+    "avg_quality_zone": 59.034071856287405,
+    "opportunity_score": 25.320498023034688,
+    "opportunity_level": "LOW",
+    "raison": "Gap de 6.5% vs national (18.5% attendu vs 12.0% réel)"
+  }
+]

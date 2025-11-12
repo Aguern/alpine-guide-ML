@@ -1,0 +1,66 @@
+# Dockerfile pour l'API Backend Alpine Guide Widget
+FROM python:3.11-slim
+
+# Métadonnées
+LABEL maintainer="Alpine Guide Team"
+LABEL description="API Backend pour Alpine Guide Widget"
+LABEL version="1.0.0"
+
+# Variables d'environnement
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PIP_NO_CACHE_DIR=1
+ENV PIP_DISABLE_PIP_VERSION_CHECK=1
+
+# Créer un utilisateur non-root pour la sécurité
+RUN groupadd -r alpine && useradd -r -g alpine alpine
+
+# Installer les dépendances système
+RUN apt-get update && apt-get install -y \
+    curl \
+    gcc \
+    g++ \
+    && rm -rf /var/lib/apt/lists/*
+
+# Définir le répertoire de travail
+WORKDIR /app
+
+# Copier les fichiers de dépendances
+COPY requirements.txt .
+
+# Créer le fichier requirements.txt avec les dépendances essentielles
+RUN echo "fastapi==0.104.1" > requirements.txt && \
+    echo "uvicorn[standard]==0.24.0" >> requirements.txt && \
+    echo "pydantic==2.5.0" >> requirements.txt && \
+    echo "redis==5.0.1" >> requirements.txt && \
+    echo "requests==2.31.0" >> requirements.txt && \
+    echo "python-multipart==0.0.6" >> requirements.txt && \
+    echo "google-generativeai==0.3.2" >> requirements.txt && \
+    echo "pyyaml==6.0.1" >> requirements.txt && \
+    echo "python-dotenv==1.0.0" >> requirements.txt
+
+# Installer les dépendances Python
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copier le code source
+COPY . .
+
+# Créer les dossiers nécessaires
+RUN mkdir -p logs config data
+
+# Changer les permissions
+RUN chown -R alpine:alpine /app
+
+# Passer à l'utilisateur non-root
+USER alpine
+
+# Port d'exposition
+EXPOSE 8000
+
+# Healthcheck
+HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+    CMD curl -f http://localhost:8000/health || exit 1
+
+# Point d'entrée avec configuration flexible
+ENTRYPOINT ["python", "-m", "uvicorn"]
+CMD ["api.chat_endpoint:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "4"]

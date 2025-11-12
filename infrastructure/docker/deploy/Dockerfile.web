@@ -1,0 +1,45 @@
+# Dockerfile pour le serveur Web (Nginx + Widget statique)
+FROM node:18-alpine as builder
+
+# Build du widget JavaScript
+WORKDIR /build
+COPY . .
+
+# Installer les dépendances et builder le widget
+RUN npm install --global npm@latest && \
+    node build.js
+
+# === Image de production ===
+FROM nginx:1.25-alpine
+
+# Métadonnées
+LABEL maintainer="Alpine Guide Team"
+LABEL description="Serveur Web pour Alpine Guide Widget"
+LABEL version="1.0.0"
+
+# Installer curl pour les healthchecks
+RUN apk add --no-cache curl
+
+# Copier les fichiers buildés depuis l'image de build
+COPY --from=builder /build/dist /usr/share/nginx/html/widget
+
+# Copier la configuration Nginx personnalisée
+COPY nginx.conf /etc/nginx/nginx.conf
+
+# Créer les dossiers pour les logs et SSL
+RUN mkdir -p /var/log/nginx /etc/nginx/ssl
+
+# Script d'entrée pour configuration dynamique
+COPY docker-entrypoint.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
+
+# Exposer les ports
+EXPOSE 80 443
+
+# Healthcheck
+HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
+    CMD curl -f http://localhost/health || exit 1
+
+# Point d'entrée
+ENTRYPOINT ["/docker-entrypoint.sh"]
+CMD ["nginx", "-g", "daemon off;"]

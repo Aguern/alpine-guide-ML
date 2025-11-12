@@ -1,0 +1,16 @@
+latitude
+longitude
+description_length
+nb_languages
+poi_density
+has_name
+has_description
+has_gps
+has_type
+has_email
+has_phone
+has_website
+completeness_score
+richness_score
+context_score
+freshness_score
