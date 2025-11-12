@@ -124,3 +124,21 @@ $RECYCLE.BIN/
 # Large data files (excluded from git)
 data/raw/**/*
 !data/raw/.gitkeep
+!data/raw/README.md
+
+# Processed data (too large, regenerate with scripts)
+data/processed/*.parquet
+data/processed/*.csv
+!data/processed/.gitkeep
+
+# ML models (too large, regenerate with training scripts)
+ml/models/**/*.pkl
+ml/models/**/*.joblib
+ml/models/**/*.h5
+ml/models/**/*.pt
+ml/models/**/*.pth
+!ml/models/**/.gitkeep
+# Keep model metadata (lightweight)
+!ml/models/**/metrics.json
+!ml/models/**/features.txt
+!ml/models/**/feature_importance.csv
