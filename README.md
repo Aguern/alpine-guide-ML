@@ -1,4 +1,4 @@
-# TourismIQ Platform
+# apline-guide-ML
 
 > **End-to-end ML/AI platform for tourism data quality assessment and business intelligence**
 
@@ -7,10 +7,6 @@
 [![scikit-learn](https://img.shields.io/badge/scikit--learn-1.4.0-orange.svg)](https://scikit-learn.org)
 [![Docker](https://img.shields.io/badge/docker-ready-blue.svg)](https://www.docker.com/)
 [![Tests](https://img.shields.io/badge/tests-passing-brightgreen.svg)](#testing)
-
-**Author:** Nicolas Angougeard
-**Purpose:** Technical portfolio demonstrating ML/AI expertise
-**Status:** Production-ready architecture
 
 ---
 
