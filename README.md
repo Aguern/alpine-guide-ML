@@ -1,115 +1,115 @@
 # Alpine Guide ML
 
-**Production-Grade Machine Learning Pipeline for Tourism POI Quality Assessment**
+**Pipeline de Machine Learning pour l'évaluation de la qualité des points d'intérêt touristiques**
 
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.109.0-green.svg)](https://fastapi.tiangolo.com)
 [![scikit-learn](https://img.shields.io/badge/scikit--learn-1.4.0-orange.svg)](https://scikit-learn.org)
 [![Docker](https://img.shields.io/badge/docker-ready-blue.svg)](https://www.docker.com/)
-[![License: Custom](https://img.shields.io/badge/license-Custom-red.svg)](#license)
+[![License: Custom](https://img.shields.io/badge/license-Custom-red.svg)](#licence)
 
-**Author:** Nicolas Angougeard
-**Project Type:** Technical Portfolio / End-to-End ML System
-**Last Updated:** November 2025
-
----
-
-## Table of Contents
-
-1. [Executive Summary](#executive-summary)
-2. [The Problem](#the-problem)
-3. [The Solution](#the-solution)
-4. [Technical Architecture](#technical-architecture)
-5. [Machine Learning Pipeline](#machine-learning-pipeline)
-6. [Quick Start](#quick-start)
-7. [API Documentation](#api-documentation)
-8. [Testing Strategy](#testing-strategy)
-9. [Performance Benchmarks](#performance-benchmarks)
-10. [Code Quality & Engineering](#code-quality--engineering)
-11. [Deployment](#deployment)
-12. [Technical Highlights](#technical-highlights)
-13. [License](#license)
+**Auteur :** Nicolas Angougeard
+**Type :** Portfolio technique / Système ML de bout en bout
+**Dernière mise à jour :** Novembre 2025
 
 ---
 
-## Executive Summary
+## Table des matières
 
-**Alpine Guide ML** is a comprehensive machine learning system designed to automatically assess and score the quality of tourism Points of Interest (POIs) in mountainous regions. This project demonstrates end-to-end ML engineering capabilities, from data collection and feature engineering to model training, API deployment, and production monitoring.
-
-### Key Achievements
-
-| Metric | Value | Interpretation |
-|--------|-------|----------------|
-| **Model Performance (R²)** | 0.9787 | Explains 97.87% of quality variance |
-| **Mean Absolute Error** | 4.82 points | Average prediction error on 0-100 scale |
-| **Dataset Scale** | 50,000+ POIs | Trained on French national tourism database |
-| **API Response Time** | <50ms (P95) | Production-ready latency with caching |
-| **Test Coverage** | 45+ tests | Comprehensive unit and integration tests |
-| **Architecture** | Microservices | Containerized with Docker, horizontally scalable |
-
-### What Makes This Project Stand Out
-
-This is not a Jupyter notebook demo. This is a **production-grade ML system** with:
-
-- **Software Engineering Best Practices**: Type hints, design patterns, error handling, logging
-- **MLOps Pipeline**: Automated training, model versioning, feature engineering, monitoring
-- **API-First Design**: FastAPI with OpenAPI documentation, Pydantic validation
-- **Comprehensive Testing**: Unit tests, integration tests, performance benchmarks
-- **DevOps-Ready**: Docker, docker-compose, Redis caching, Prometheus monitoring
-- **Clean Architecture**: Separation of concerns, dependency injection, testable components
+1. [Résumé](#résumé)
+2. [Le problème](#le-problème)
+3. [La solution](#la-solution)
+4. [Architecture technique](#architecture-technique)
+5. [Pipeline machine learning](#pipeline-machine-learning)
+6. [Démarrage rapide](#démarrage-rapide)
+7. [Documentation API](#documentation-api)
+8. [Tests](#tests)
+9. [Performances](#performances)
+10. [Qualité du code](#qualité-du-code)
+11. [Déploiement](#déploiement)
+12. [Points techniques clés](#points-techniques-clés)
+13. [Licence](#licence)
 
 ---
 
-## The Problem
+## Résumé
 
-### Business Context
+**Alpine Guide ML** est un système de machine learning complet qui évalue automatiquement la qualité des points d'intérêt (POI) touristiques en montagne. Ce projet démontre une maîtrise de l'ingénierie ML de bout en bout : collecte de données, feature engineering, entraînement de modèle, déploiement d'API et monitoring en production.
 
-Tourism platforms aggregate Points of Interest from multiple sources (national databases, user submissions, partner APIs). However, data quality varies dramatically:
+### Résultats obtenus
 
-- **Incomplete Information**: 45% of POIs lack opening hours, 62% lack email contact
-- **Outdated Data**: Many POIs haven't been updated in years
-- **Inconsistent Standards**: No unified quality metric across sources
-- **Scale Challenge**: Manual review doesn't scale to 50,000+ POIs
+| Métrique | Valeur | Interprétation |
+|----------|--------|----------------|
+| **Performance du modèle (R²)** | 0.9787 | Explique 97.87% de la variance |
+| **Erreur moyenne (MAE)** | 4.82 points | Sur une échelle de 0 à 100 |
+| **Échelle du dataset** | 50 000+ POIs | Base de données nationale du tourisme |
+| **Temps de réponse API** | <50ms (P95) | Latence production avec cache |
+| **Couverture des tests** | 45+ tests | Tests unitaires et d'intégration |
+| **Architecture** | Microservices | Conteneurisé avec Docker, scalable horizontalement |
 
-### The Cost of Poor Data Quality
+### Ce qui distingue ce projet
 
-- **User Experience**: Tourists arrive at closed attractions, miss important information
-- **Business Impact**: Low-quality listings reduce conversion rates
-- **Operational Burden**: Support teams handle complaints about incorrect data
-- **Competitive Disadvantage**: Platforms with better data win market share
+Ce n'est pas un notebook Jupyter de démonstration. C'est un **système ML production-ready** avec :
 
-### Manual Assessment Doesn't Scale
-
-A tourism expert can evaluate ~10 POIs per hour. For 50,000 POIs:
-- **Time Required**: 5,000 hours (208 days of full-time work)
-- **Cost**: 75,000€ - 150,000€ (at 15-30€/hour)
-- **Consistency**: Human reviewers apply subjective criteria
-
-**The Need**: An automated, objective, and scalable system to assess POI quality.
+- **Bonnes pratiques d'ingénierie logicielle** : type hints, design patterns, gestion d'erreurs, logging
+- **Pipeline MLOps** : entraînement automatisé, versioning de modèle, feature engineering, monitoring
+- **API-first design** : FastAPI avec documentation OpenAPI, validation Pydantic
+- **Tests complets** : tests unitaires, tests d'intégration, benchmarks de performance
+- **DevOps-ready** : Docker, docker-compose, cache Redis, monitoring Prometheus
+- **Architecture propre** : séparation des responsabilités, injection de dépendances, composants testables
 
 ---
 
-## The Solution
+## Le problème
 
-### Alpine Guide ML: Automated Quality Scoring
+### Contexte métier
 
-This system uses supervised machine learning to score POI quality on a 0-100 scale, enabling:
+Les plateformes de tourisme agrègent des points d'intérêt depuis de multiples sources (bases nationales, contributions utilisateurs, APIs partenaires). Mais la qualité des données varie énormément :
 
-1. **Quality Ranking**: Sort POIs by quality for better user experience
-2. **Data Improvement**: Identify incomplete POIs that need enrichment
-3. **Business Intelligence**: Detect geographic zones with high opportunity potential
-4. **Real-Time Scoring**: API endpoint for live quality assessment
+- **Informations incomplètes** : 45% des POIs n'ont pas d'horaires d'ouverture, 62% n'ont pas d'email
+- **Données obsolètes** : beaucoup de POIs n'ont pas été mis à jour depuis des années
+- **Standards inconsistants** : pas de métrique de qualité unifiée entre les sources
+- **Défi d'échelle** : la revue manuelle ne passe pas à l'échelle sur 50 000+ POIs
 
-### How It Works (High-Level)
+### Le coût d'une mauvaise qualité de données
+
+- **Expérience utilisateur** : les touristes arrivent dans des lieux fermés, manquent d'informations importantes
+- **Impact business** : les listings de mauvaise qualité réduisent les taux de conversion
+- **Charge opérationnelle** : les équipes support gèrent les plaintes sur les données incorrectes
+- **Désavantage concurrentiel** : les plateformes avec de meilleures données gagnent des parts de marché
+
+### L'évaluation manuelle ne passe pas à l'échelle
+
+Un expert tourisme peut évaluer ~10 POIs par heure. Pour 50 000 POIs :
+- **Temps requis** : 5 000 heures (208 jours de travail à temps plein)
+- **Coût** : 75 000€ - 150 000€ (à 15-30€/heure)
+- **Cohérence** : les reviewers humains appliquent des critères subjectifs
+
+**Le besoin** : un système automatisé, objectif et scalable pour évaluer la qualité des POIs.
+
+---
+
+## La solution
+
+### Alpine Guide ML : scoring automatique de qualité
+
+Ce système utilise du machine learning supervisé pour scorer la qualité des POIs sur une échelle de 0 à 100, permettant :
+
+1. **Classement par qualité** : trier les POIs pour améliorer l'expérience utilisateur
+2. **Amélioration des données** : identifier les POIs incomplets qui nécessitent enrichissement
+3. **Intelligence business** : détecter les zones géographiques à fort potentiel
+4. **Scoring temps réel** : API pour l'évaluation instantanée de qualité
+
+### Fonctionnement (vue d'ensemble)
 
 ```mermaid
 graph LR
-    A[Data Sources] --> B[Data Collection]
+    A[Sources de données] --> B[Collecte de données]
     B --> C[Feature Engineering]
-    C --> D[ML Model Training]
-    D --> E[Trained Model]
-    E --> F[FastAPI Service]
-    F --> G[Quality Score API]
+    C --> D[Entraînement du modèle ML]
+    D --> E[Modèle entraîné]
+    E --> F[Service FastAPI]
+    F --> G[API de scoring]
 
     H[Dashboard] --> F
     I[Monitoring] --> F
@@ -119,67 +119,67 @@ graph LR
     style G fill:#FFD700
 ```
 
-### Technology Stack
+### Stack technique
 
-#### Core ML/AI
-- **scikit-learn 1.4.0**: Gradient Boosting Regressor for tabular data
-- **pandas 2.2.0**: Data manipulation and feature engineering
-- **numpy**: Numerical computations
-- **joblib**: Model serialization and persistence
+#### ML/IA
+- **scikit-learn 1.4.0** : Gradient Boosting Regressor pour données tabulaires
+- **pandas 2.2.0** : manipulation de données et feature engineering
+- **numpy** : calculs numériques
+- **joblib** : sérialisation et persistence du modèle
 
-#### API & Infrastructure
-- **FastAPI 0.109.0**: High-performance async API framework
-- **Pydantic 2.5.3**: Type-safe data validation
-- **Uvicorn**: ASGI server with async workers
-- **Redis 7**: Sub-millisecond caching layer
-- **Docker & Docker Compose**: Containerization and orchestration
+#### API & infrastructure
+- **FastAPI 0.109.0** : framework API async haute performance
+- **Pydantic 2.5.3** : validation de données type-safe
+- **Uvicorn** : serveur ASGI avec workers async
+- **Redis 7** : couche de cache sub-milliseconde
+- **Docker & Docker Compose** : conteneurisation et orchestration
 
-#### Data Engineering
-- **Apache Parquet**: Columnar storage (10x compression vs CSV)
-- **Polars**: Lightning-fast DataFrame operations
-- **DuckDB**: In-process SQL analytics
-- **SQLAlchemy**: Database ORM (optional persistence)
+#### Data engineering
+- **Apache Parquet** : stockage colonne (compression 10x vs CSV)
+- **Polars** : opérations DataFrame ultra-rapides
+- **DuckDB** : moteur d'analytics SQL in-process
+- **SQLAlchemy** : ORM base de données (persistence optionnelle)
 
 #### Monitoring & DevOps
-- **Prometheus**: Metrics collection (latency, throughput, errors)
-- **Grafana**: Visualization dashboards
-- **Streamlit**: Interactive analytics dashboard
-- **pytest**: Testing framework with 45+ tests
+- **Prometheus** : collecte de métriques (latence, débit, erreurs)
+- **Grafana** : dashboards de visualisation
+- **Streamlit** : dashboard d'analytics interactif
+- **pytest** : framework de tests avec 45+ tests
 
 ---
 
-## Technical Architecture
+## Architecture technique
 
-### System Components
+### Composants du système
 
 ```mermaid
 graph TB
-    subgraph "Client Layer"
-        A[Web Browser]
-        B[Mobile App]
-        C[External Service]
+    subgraph "Couche client"
+        A[Navigateur web]
+        B[Application mobile]
+        C[Service externe]
     end
 
-    subgraph "API Layer"
-        D[Nginx Load Balancer]
-        E1[FastAPI Instance 1]
-        E2[FastAPI Instance 2]
-        E3[FastAPI Instance N]
+    subgraph "Couche API"
+        D[Load Balancer Nginx]
+        E1[Instance FastAPI 1]
+        E2[Instance FastAPI 2]
+        E3[Instance FastAPI N]
     end
 
-    subgraph "Caching Layer"
+    subgraph "Couche cache"
         F[Redis Cache]
     end
 
-    subgraph "ML Inference"
+    subgraph "Inférence ML"
         G[POI Quality Scorer]
         H[Feature Extractor]
-        I[Trained Model scorer.pkl]
+        I[Modèle entraîné scorer.pkl]
     end
 
-    subgraph "Data Layer"
-        J[(POIs Database)]
-        K[Parquet Files]
+    subgraph "Couche données"
+        J[(Base POIs)]
+        K[Fichiers Parquet]
     end
 
     subgraph "Monitoring"
@@ -188,7 +188,7 @@ graph TB
     end
 
     subgraph "Analytics"
-        N[Streamlit Dashboard]
+        N[Dashboard Streamlit]
     end
 
     A --> D
@@ -223,25 +223,25 @@ graph TB
     style D fill:#87CEEB
 ```
 
-### Design Principles
+### Principes de conception
 
-#### 1. Separation of Concerns
+#### 1. Séparation des responsabilités
 
-Each module has a single, well-defined responsibility:
+Chaque module a une responsabilité unique et bien définie :
 
 ```
 alpine-guide-ML/
-├── api/                # HTTP interface, request routing
-├── ml/                 # Model training and inference
-├── data/               # Data collection and processing
-├── infrastructure/     # Docker, monitoring, deployment
-├── tests/              # Unit and integration tests
-└── dashboard/          # Analytics and visualization
+├── api/                # Interface HTTP, routing des requêtes
+├── ml/                 # Entraînement et inférence du modèle
+├── data/               # Collecte et traitement des données
+├── infrastructure/     # Docker, monitoring, déploiement
+├── tests/              # Tests unitaires et d'intégration
+└── dashboard/          # Analytics et visualisation
 ```
 
-#### 2. Type Safety Throughout
+#### 2. Type safety partout
 
-All interfaces use Python type hints and Pydantic models:
+Toutes les interfaces utilisent des type hints Python et des modèles Pydantic :
 
 ```python
 from typing import Dict, Optional
@@ -254,94 +254,94 @@ class POIScoreRequest(BaseModel):
     description: Optional[str] = None
 ```
 
-**Benefits:**
-- Compile-time error detection
-- Self-documenting code
-- IDE autocomplete support
-- Reduced runtime bugs
+**Bénéfices :**
+- Détection d'erreurs au moment du développement
+- Code auto-documenté
+- Support d'autocomplétion IDE
+- Réduction des bugs runtime
 
-#### 3. Caching for Performance
+#### 3. Cache pour la performance
 
 ```
-Request → Redis Check → Cache Hit? → Return (2ms)
+Requête → Check Redis → Cache Hit? → Retour (2ms)
               ↓
           Cache Miss
               ↓
-       ML Inference (45ms) → Cache Result → Return
+       Inférence ML (45ms) → Mise en cache → Retour
 ```
 
-**Expected cache hit rate:** 85%+
+**Taux de cache hit attendu :** 85%+
 
-#### 4. Fail-Fast Error Handling
+#### 4. Gestion d'erreurs fail-fast
 
 ```python
 if not model_path.exists():
     raise FileNotFoundError(
-        f"Model not found at {model_path}. "
-        "Run training script: ml/training/03_train_quality_scorer.py"
+        f"Modèle non trouvé : {model_path}. "
+        "Lancez le script d'entraînement : ml/training/03_train_quality_scorer.py"
     )
 ```
 
-Errors are caught early and provide actionable guidance.
+Les erreurs sont détectées tôt et fournissent des instructions actionnables.
 
 ---
 
-## Machine Learning Pipeline
+## Pipeline machine learning
 
-### Problem Formulation
+### Formulation du problème
 
-**Type:** Supervised Regression
-**Input:** POI metadata (name, description, GPS coordinates, images, etc.)
-**Output:** Quality score ∈ [0, 100]
+**Type :** Régression supervisée
+**Entrée :** Métadonnées POI (nom, description, coordonnées GPS, images, etc.)
+**Sortie :** Score de qualité ∈ [0, 100]
 
-**Success Criteria:**
-- R² > 0.75 (explain 75%+ of variance)
-- MAE < 10 points (on 0-100 scale)
-- Inference time < 50ms (for real-time API)
+**Critères de succès :**
+- R² > 0.75 (expliquer 75%+ de la variance)
+- MAE < 10 points (sur échelle 0-100)
+- Temps d'inférence < 50ms (pour API temps réel)
 
-**Achieved:**
+**Résultats atteints :**
 - R² = 0.9787
 - MAE = 4.82 points
-- Inference time = 4-8ms (CPU only)
+- Temps d'inférence = 4-8ms (CPU uniquement)
 
-### Data Sources
+### Sources de données
 
-The system aggregates data from multiple external APIs:
+Le système agrège des données depuis plusieurs APIs externes :
 
-| Source | Data Type | Volume | Purpose |
-|--------|-----------|--------|---------|
-| **DATAtourisme** | Tourism POIs | 50,000+ | Primary POI database (name, description, GPS, images) |
-| **Open-Meteo** | Weather data | 13 regions | Climate context for seasonal POIs |
-| **Hub'Eau** | Water temperature | 1,000+ sites | Bathing spot quality assessment |
-| **INSEE MELODI** | Socio-economic | 10,000 communes | Salary, employment, population data |
-| **Opendatasoft** | Population | All communes | City size and tourism maturity |
+| Source | Type de données | Volume | Utilisation |
+|--------|-----------------|--------|-------------|
+| **DATAtourisme** | POIs touristiques | 50 000+ | Base primaire (nom, description, GPS, images) |
+| **Open-Meteo** | Données météo | 13 régions | Contexte climatique pour POIs saisonniers |
+| **Hub'Eau** | Température de l'eau | 1 000+ sites | Évaluation qualité spots de baignade |
+| **INSEE MELODI** | Socio-économique | 10 000 communes | Salaires, emploi, données démographiques |
+| **Opendatasoft** | Population | Toutes communes | Taille ville et maturité touristique |
 
-### Data Collection Architecture
+### Architecture de collecte de données
 
 ```mermaid
 graph LR
-    A[DATAtourisme API] --> E[Data Collectors]
-    B[Open-Meteo API] --> E
-    C[Hub'Eau API] --> E
-    D[INSEE API] --> E
+    A[API DATAtourisme] --> E[Collecteurs de données]
+    B[API Open-Meteo] --> E
+    C[API Hub'Eau] --> E
+    D[API INSEE] --> E
 
-    E --> F[Raw Data Storage]
-    F --> G[Data Validation]
-    G --> H[Cleaned Dataset]
+    E --> F[Stockage données brutes]
+    F --> G[Validation des données]
+    G --> H[Dataset nettoyé]
 
     style E fill:#87CEEB
     style H fill:#90EE90
 ```
 
-**Implementation:** See `data/ingestion/` directory with collectors for each API.
+**Implémentation :** Voir le répertoire `data/ingestion/` avec des collecteurs pour chaque API.
 
-### Feature Engineering (17 Features)
+### Feature engineering (17 features)
 
-The model uses carefully engineered features across 4 categories:
+Le modèle utilise des features soigneusement conçues en 4 catégories :
 
-#### 1. Completeness Features (7 binary features)
+#### 1. Features de complétude (7 features binaires)
 
-Indicators of data presence:
+Indicateurs de présence de données :
 
 ```python
 features = {
@@ -355,11 +355,11 @@ features = {
 }
 ```
 
-**Rationale:** Completeness is a direct proxy for POI quality. A fully documented POI is objectively better.
+**Rationale :** La complétude est un proxy direct de la qualité. Un POI entièrement documenté est objectivement meilleur.
 
-#### 2. Richness Features (3 continuous features)
+#### 2. Features de richesse (3 features continues)
 
-Measures of information quality:
+Mesures de qualité de l'information :
 
 ```python
 features = {
@@ -369,33 +369,33 @@ features = {
 }
 ```
 
-**Rationale:**
-- Longer descriptions provide more value to tourists
-- Multiple images enhance attractiveness
-- Official website indicates professionalism
+**Rationale :**
+- Des descriptions plus longues apportent plus de valeur aux touristes
+- Plusieurs images améliorent l'attractivité
+- Un site web officiel indique du professionnalisme
 
-#### 3. Context Features (4 features from external data)
+#### 3. Features de contexte (4 features depuis données externes)
 
-External socio-economic enrichment:
+Enrichissement socio-économique externe :
 
 ```python
 features = {
-    "insee_salary_median": commune["median_salary"],  # From INSEE
-    "population": commune["population"],              # From Opendatasoft
-    "poi_density_10km": count_pois_nearby(lat, lon),  # Calculated
+    "insee_salary_median": commune["median_salary"],  # Depuis INSEE
+    "population": commune["population"],              # Depuis Opendatasoft
+    "poi_density_10km": count_pois_nearby(lat, lon),  # Calculé
     "latitude": poi["latitude"],
     "longitude": poi["longitude"],
 }
 ```
 
-**Rationale:**
-- Wealthier areas often have better tourism infrastructure
-- High POI density indicates tourism maturity
-- Population correlates with resource availability
+**Rationale :**
+- Les zones plus aisées ont souvent une meilleure infrastructure touristique
+- Une forte densité de POIs indique une maturité touristique
+- La population corrèle avec la disponibilité des ressources
 
-#### 4. Freshness Features (2 temporal features)
+#### 4. Features de fraîcheur (2 features temporelles)
 
-Data recency tracking:
+Suivi de la récence des données :
 
 ```python
 from datetime import datetime
@@ -405,205 +405,205 @@ days_since = (datetime.now() - last_update).days
 
 features = {
     "days_since_update": days_since,
-    "is_recent": 1.0 if days_since <= 180 else 0.0,  # <6 months
+    "is_recent": 1.0 if days_since <= 180 else 0.0,  # <6 mois
 }
 ```
 
-**Rationale:**
-- Tourism information (hours, prices) changes over time
-- Recent updates indicate active maintenance
+**Rationale :**
+- Les informations touristiques (horaires, prix) changent avec le temps
+- Les mises à jour récentes indiquent une maintenance active
 
-### Model Selection & Training
+### Sélection et entraînement du modèle
 
-#### Algorithm Comparison
+#### Comparaison d'algorithmes
 
-| Algorithm | R² Score | MAE | Training Time | Inference Time |
-|-----------|----------|-----|---------------|----------------|
+| Algorithme | R² Score | MAE | Temps entraînement | Temps inférence |
+|------------|----------|-----|--------------------|-----------------|
 | **Gradient Boosting (sklearn)** | **0.9787** | **4.82** | 1m 45s | 4-8ms |
 | Random Forest | 0.9521 | 6.15 | 2m 30s | 6-10ms |
 | XGBoost | 0.9695 | 5.20 | 1m 20s | 5-9ms |
-| Linear Regression | 0.7542 | 12.80 | 5s | 1ms |
+| Régression linéaire | 0.7542 | 12.80 | 5s | 1ms |
 
-**Winner:** Gradient Boosting Regressor (scikit-learn)
+**Gagnant :** Gradient Boosting Regressor (scikit-learn)
 
-#### Why Gradient Boosting?
+#### Pourquoi le Gradient Boosting ?
 
-- **Best Performance:** R² = 0.9787 (97.87% explained variance)
-- **Fast Inference:** 4-8ms on CPU (no GPU required)
-- **Interpretable:** Feature importance easy to extract for business stakeholders
-- **Production-Ready:** Mature library, stable APIs, wide adoption
-- **No Hyperparameter Tuning Needed:** Default parameters perform excellently
+- **Meilleure performance :** R² = 0.9787 (97.87% de variance expliquée)
+- **Inférence rapide :** 4-8ms sur CPU (pas besoin de GPU)
+- **Interprétable :** Importance des features facile à extraire pour les stakeholders business
+- **Production-ready :** Bibliothèque mature, APIs stables, adoption large
+- **Pas besoin de tuning d'hyperparamètres :** Les paramètres par défaut fonctionnent excellemment
 
-#### Why Not Deep Learning?
+#### Pourquoi pas du Deep Learning ?
 
-- Tabular data with engineered features (GBMs outperform neural nets here)
-- Simpler deployment (no TensorFlow/PyTorch dependencies)
-- Better interpretability (feature importance for business insights)
-- Lower resource requirements (CPU-only, <200MB memory)
+- Données tabulaires avec features engineered (les GBMs surpassent les réseaux de neurones ici)
+- Déploiement plus simple (pas de dépendances TensorFlow/PyTorch)
+- Meilleure interprétabilité (importance des features pour insights business)
+- Besoins en ressources plus faibles (CPU uniquement, <200MB mémoire)
 
-### Training Process
+### Processus d'entraînement
 
 ```mermaid
 graph TD
-    A[Raw POI Data 50k samples] --> B[Feature Engineering]
-    B --> C[Features Dataset 17 features]
-    C --> D[Train/Test Split 80/20]
-    D --> E[Training Set 40k]
-    D --> F[Test Set 10k]
+    A[Données POI brutes 50k échantillons] --> B[Feature Engineering]
+    B --> C[Dataset features 17 features]
+    C --> D[Split Train/Test 80/20]
+    D --> E[Set d'entraînement 40k]
+    D --> F[Set de test 10k]
 
-    E --> G[Train Gradient Boosting]
-    G --> H[Trained Model]
+    E --> G[Entraîner Gradient Boosting]
+    G --> H[Modèle entraîné]
 
-    H --> I[Predict on Test Set]
+    H --> I[Prédire sur set de test]
     F --> I
 
-    I --> J[Evaluate Metrics]
+    I --> J[Évaluer métriques]
     J --> K[R² = 0.9787]
     J --> L[MAE = 4.82]
     J --> M[RMSE = 6.93]
 
-    H --> N[Save Model scorer.pkl]
-    N --> O[Deploy to API]
+    H --> N[Sauvegarder modèle scorer.pkl]
+    N --> O[Déployer vers API]
 
     style H fill:#90EE90
     style N fill:#FFD700
     style O fill:#87CEEB
 ```
 
-**Training Script:** `ml/training/03_train_quality_scorer.py`
+**Script d'entraînement :** `ml/training/03_train_quality_scorer.py`
 
 ```bash
-# Train the model (takes ~2 minutes)
+# Entraîner le modèle (prend ~2 minutes)
 cd ml/training
 python 03_train_quality_scorer.py
 
-# Output:
-# ✓ Trained on 40,000 POIs
+# Sortie :
+# ✓ Entraîné sur 40 000 POIs
 # ✓ R² Score: 0.9787
 # ✓ MAE: 4.82 points
-# ✓ Model saved to: ml/models/quality_scorer/scorer.pkl
+# ✓ Modèle sauvegardé : ml/models/quality_scorer/scorer.pkl
 ```
 
-### Model Performance
+### Performance du modèle
 
-#### Metrics Summary
+#### Résumé des métriques
 
-| Metric | Train Set | Test Set | Interpretation |
-|--------|-----------|----------|----------------|
-| **R² Score** | 0.9893 | 0.9787 | Near-perfect fit, minimal overfitting |
-| **MAE** | 3.21 | 4.82 | Average error of ~5 points (on 0-100 scale) |
-| **RMSE** | 5.45 | 6.93 | Low variance in errors |
+| Métrique | Set d'entraînement | Set de test | Interprétation |
+|----------|-------------------|-------------|----------------|
+| **R² Score** | 0.9893 | 0.9787 | Fit quasi-parfait, overfitting minimal |
+| **MAE** | 3.21 | 4.82 | Erreur moyenne de ~5 points (sur échelle 0-100) |
+| **RMSE** | 5.45 | 6.93 | Faible variance dans les erreurs |
 
-#### Error Distribution (Test Set)
+#### Distribution des erreurs (set de test)
 
 ```
-Absolute Error Range     | Count    | Percentage
--------------------------|----------|------------
-< 5 points              | 7,243    | 72.4%
-5-10 points             | 2,102    | 21.0%
-10-15 points            | 489      | 4.9%
-> 15 points             | 166      | 1.7%
+Plage d'erreur absolue  | Nombre   | Pourcentage
+------------------------|----------|------------
+< 5 points             | 7 243    | 72.4%
+5-10 points            | 2 102    | 21.0%
+10-15 points           | 489      | 4.9%
+> 15 points            | 166      | 1.7%
 ```
 
-**Interpretation:** 93.4% of predictions are within 10 points of the true score.
+**Interprétation :** 93.4% des prédictions sont à moins de 10 points du score réel.
 
-#### Feature Importance (Top 10)
+#### Importance des features (Top 10)
 
 ```
 Feature                  | Importance | Impact
 -------------------------|------------|--------
-description_length       | 0.3245     | 32.5% - Most predictive feature
-has_description          | 0.1823     | 18.2% - Binary completeness flag
-num_images               | 0.1456     | 14.6% - Visual richness
-poi_density_10km         | 0.0987     | 9.9%  - Tourism maturity indicator
-insee_salary_median      | 0.0765     | 7.7%  - Economic context
-has_website              | 0.0621     | 6.2%  - Professionalism indicator
-days_since_update        | 0.0543     | 5.4%  - Freshness penalty
-has_images               | 0.0432     | 4.3%  - Visual presence
-has_address              | 0.0321     | 3.2%  - Contact completeness
-is_recent                | 0.0287     | 2.9%  - Recent update bonus
+description_length       | 0.3245     | 32.5% - Feature la plus prédictive
+has_description          | 0.1823     | 18.2% - Flag de complétude binaire
+num_images               | 0.1456     | 14.6% - Richesse visuelle
+poi_density_10km         | 0.0987     | 9.9%  - Indicateur de maturité touristique
+insee_salary_median      | 0.0765     | 7.7%  - Contexte économique
+has_website              | 0.0621     | 6.2%  - Indicateur de professionnalisme
+days_since_update        | 0.0543     | 5.4%  - Pénalité de fraîcheur
+has_images               | 0.0432     | 4.3%  - Présence visuelle
+has_address              | 0.0321     | 3.2%  - Complétude du contact
+is_recent                | 0.0287     | 2.9%  - Bonus de mise à jour récente
 ```
 
-**Key Insights:**
-1. **Description quality dominates:** 50.7% of predictive power comes from description features
-2. **Visual content matters:** Images contribute 18.9% combined
-3. **Context features add value:** Economic and density data contribute 17.6%
-4. **Freshness is important:** Recency contributes 8.3%
+**Insights clés :**
+1. **La qualité de la description domine :** 50.7% du pouvoir prédictif vient des features de description
+2. **Le contenu visuel compte :** Les images contribuent 18.9% combinées
+3. **Les features de contexte ajoutent de la valeur :** Les données économiques et de densité contribuent 17.6%
+4. **La fraîcheur est importante :** La récence contribue 8.3%
 
 ---
 
-## Quick Start
+## Démarrage rapide
 
-### Prerequisites
+### Prérequis
 
-- **Docker & Docker Compose** (recommended) OR
-- **Python 3.11+** (for local development)
-- **4GB RAM minimum** (8GB recommended)
-- **Linux/macOS/Windows** with WSL2
+- **Docker & Docker Compose** (recommandé) OU
+- **Python 3.11+** (pour développement local)
+- **4GB RAM minimum** (8GB recommandé)
+- **Linux/macOS/Windows** avec WSL2
 
-### Option 1: Docker (Recommended)
+### Option 1 : Docker (recommandé)
 
-Deploy the entire stack in 3 commands:
+Déployez toute la stack en 3 commandes :
 
 ```bash
-# 1. Clone the repository
+# 1. Cloner le repository
 git clone https://github.com/Aguern/alpine-guide-ML.git
 cd alpine-guide-ML
 
-# 2. Configure environment
+# 2. Configurer l'environnement
 cp .env.example .env
-# Edit .env if needed (defaults work for local development)
+# Éditez .env si nécessaire (les defaults fonctionnent en local)
 
-# 3. Launch all services
+# 3. Lancer tous les services
 docker-compose up -d
 
-# Verify services are running
+# Vérifier que les services tournent
 docker-compose ps
 ```
 
-**Access the services:**
+**Accéder aux services :**
 
-- **API Documentation:** http://localhost:8000/docs (OpenAPI/Swagger)
-- **API Health Check:** http://localhost:8000/health
-- **Dashboard:** http://localhost:8501 (Streamlit)
-- **Monitoring:** http://localhost:3000 (Grafana, if enabled)
+- **Documentation API :** http://localhost:8000/docs (OpenAPI/Swagger)
+- **Health check API :** http://localhost:8000/health
+- **Dashboard :** http://localhost:8501 (Streamlit)
+- **Monitoring :** http://localhost:3000 (Grafana, si activé)
 
-### Option 2: Local Development
+### Option 2 : Développement local
 
 ```bash
-# 1. Create virtual environment
+# 1. Créer un environnement virtuel
 python3.11 -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+source venv/bin/activate  # Sur Windows: venv\Scripts\activate
 
-# 2. Install dependencies
+# 2. Installer les dépendances
 pip install -r requirements.txt
 
-# 3. Set environment variables
+# 3. Définir les variables d'environnement
 cp .env.example .env
 export $(cat .env | xargs)
 
-# 4. Train the model (if not already trained)
+# 4. Entraîner le modèle (si pas déjà entraîné)
 cd ml/training
 python 03_train_quality_scorer.py
 cd ../..
 
-# 5. Run the API
+# 5. Lancer l'API
 uvicorn api.main:app --reload --port 8000
 
-# 6. In another terminal, run the dashboard
+# 6. Dans un autre terminal, lancer le dashboard
 streamlit run dashboard/app.py
 ```
 
-### Verify Installation
+### Vérifier l'installation
 
-Test the API with a sample POI:
+Tester l'API avec un POI d'exemple :
 
 ```bash
 curl -X POST "http://localhost:8000/score-poi" \
   -H "Content-Type: application/json" \
   -d '{
-    "name": "Mont Blanc Summit",
-    "description": "Highest peak in the Alps at 4,808 meters",
+    "name": "Sommet du Mont Blanc",
+    "description": "Plus haut sommet des Alpes à 4 808 mètres",
     "latitude": 45.8326,
     "longitude": 6.8652,
     "num_images": 15,
@@ -611,7 +611,7 @@ curl -X POST "http://localhost:8000/score-poi" \
   }'
 ```
 
-**Expected Response:**
+**Réponse attendue :**
 
 ```json
 {
@@ -625,26 +625,26 @@ curl -X POST "http://localhost:8000/score-poi" \
 
 ---
 
-## API Documentation
+## Documentation API
 
-### Base URL
+### URL de base
 
-**Local:** `http://localhost:8000`
-**Production:** `https://api.alpine-guide.example.com` (example)
+**Local :** `http://localhost:8000`
+**Production :** `https://api.alpine-guide.example.com` (exemple)
 
 ### Endpoints
 
-#### 1. Health Check
+#### 1. Health check
 
 **GET** `/health`
 
-Returns API health status and version.
+Retourne le statut de santé et la version de l'API.
 
 ```bash
 curl http://localhost:8000/health
 ```
 
-**Response:**
+**Réponse :**
 
 ```json
 {
@@ -655,48 +655,48 @@ curl http://localhost:8000/health
 }
 ```
 
-#### 2. Score a POI
+#### 2. Scorer un POI
 
 **POST** `/score-poi`
 
-Score the quality of a single POI.
+Score la qualité d'un POI individuel.
 
-**Request Body:**
+**Corps de la requête :**
 
 ```json
 {
   "name": "string",
-  "description": "string (optional)",
-  "latitude": "float (-90 to 90)",
-  "longitude": "float (-180 to 180)",
-  "address": "string (optional)",
-  "num_images": "integer (optional, default: 0)",
-  "website": "string (optional)",
-  "opening_hours": "string (optional)",
-  "phone": "string (optional)",
-  "email": "string (optional)",
-  "updated_at": "ISO date (optional)"
+  "description": "string (optionnel)",
+  "latitude": "float (-90 à 90)",
+  "longitude": "float (-180 à 180)",
+  "address": "string (optionnel)",
+  "num_images": "integer (optionnel, défaut: 0)",
+  "website": "string (optionnel)",
+  "opening_hours": "string (optionnel)",
+  "phone": "string (optionnel)",
+  "email": "string (optionnel)",
+  "updated_at": "date ISO (optionnel)"
 }
 ```
 
-**Example:**
+**Exemple :**
 
 ```bash
 curl -X POST "http://localhost:8000/score-poi" \
   -H "Content-Type: application/json" \
   -d '{
     "name": "Refuge du Goûter",
-    "description": "Mountain refuge at 3,835m on Mont Blanc route",
+    "description": "Refuge de montagne à 3 835m sur la voie normale du Mont Blanc",
     "latitude": 45.8533,
     "longitude": 6.8342,
     "num_images": 8,
     "website": "https://www.refugedugouter.ffcam.fr",
-    "opening_hours": "June-September",
+    "opening_hours": "Juin-Septembre",
     "phone": "+33 4 50 54 40 93"
   }'
 ```
 
-**Response:**
+**Réponse :**
 
 ```json
 {
@@ -709,13 +709,13 @@ curl -X POST "http://localhost:8000/score-poi" \
 }
 ```
 
-#### 3. Batch Scoring
+#### 3. Scoring par lots
 
 **POST** `/score-batch`
 
-Score multiple POIs in a single request (more efficient).
+Score plusieurs POIs en une seule requête (plus efficace).
 
-**Request Body:**
+**Corps de la requête :**
 
 ```json
 {
@@ -726,13 +726,13 @@ Score multiple POIs in a single request (more efficient).
 }
 ```
 
-#### 4. Model Information
+#### 4. Informations sur le modèle
 
 **GET** `/model/info`
 
-Get model metadata and performance metrics.
+Récupère les métadonnées et métriques de performance du modèle.
 
-**Response:**
+**Réponse :**
 
 ```json
 {
@@ -747,109 +747,109 @@ Get model metadata and performance metrics.
 }
 ```
 
-### Interactive API Documentation
+### Documentation interactive de l'API
 
-FastAPI automatically generates interactive API documentation:
+FastAPI génère automatiquement une documentation interactive :
 
-- **Swagger UI:** http://localhost:8000/docs
-- **ReDoc:** http://localhost:8000/redoc
-- **OpenAPI JSON:** http://localhost:8000/openapi.json
+- **Swagger UI :** http://localhost:8000/docs
+- **ReDoc :** http://localhost:8000/redoc
+- **OpenAPI JSON :** http://localhost:8000/openapi.json
 
 ---
 
-## Testing Strategy
+## Tests
 
-### Test Coverage
+### Couverture des tests
 
 ```bash
-# Run all tests
+# Lancer tous les tests
 pytest -v
 
-# Run with coverage report
+# Lancer avec rapport de couverture
 pytest --cov=ml --cov=api --cov=data --cov-report=html
 open htmlcov/index.html
 
-# Run only unit tests
+# Lancer uniquement les tests unitaires
 pytest tests/unit/ -v
 
-# Run only integration tests
+# Lancer uniquement les tests d'intégration
 pytest tests/integration/ -v
 ```
 
-### Unit Tests (tests/unit/)
+### Tests unitaires (tests/unit/)
 
-**File:** `tests/unit/test_poi_scorer.py` (20+ tests)
+**Fichier :** `tests/unit/test_poi_scorer.py` (20+ tests)
 
-**Coverage:**
+**Couverture :**
 
-1. **Model Initialization**
-   - Default path handling
-   - Custom path handling
-   - Error handling for missing model
+1. **Initialisation du modèle**
+   - Gestion du chemin par défaut
+   - Gestion du chemin personnalisé
+   - Gestion d'erreur pour modèle manquant
 
-2. **Feature Extraction**
-   - Complete POI data
-   - Minimal POI data
-   - Edge cases (None values, empty strings)
-   - Freshness calculation (recent vs old POIs)
+2. **Extraction de features**
+   - Données POI complètes
+   - Données POI minimales
+   - Cas limites (valeurs None, chaînes vides)
+   - Calcul de fraîcheur (POIs récents vs anciens)
 
-3. **POI Scoring**
-   - Single POI scoring
-   - Batch scoring
-   - Feature return option
-   - Confidence calculation
+3. **Scoring de POI**
+   - Scoring POI individuel
+   - Scoring par lots
+   - Option de retour des features
+   - Calcul de confiance
 
-4. **Feature Importance**
-   - Top N features extraction
-   - Model info retrieval
+4. **Importance des features**
+   - Extraction des top N features
+   - Récupération des infos du modèle
 
-**Example Test:**
+**Exemple de test :**
 
 ```python
 def test_extract_features_complete_poi(sample_poi_complete):
     scorer = POIQualityScorer.__new__(POIQualityScorer)
     features = scorer.extract_features(sample_poi_complete)
 
-    # Check all required features are present
+    # Vérifier que toutes les features requises sont présentes
     assert len(features) == 17
 
-    # Check completeness features
+    # Vérifier les features de complétude
     assert features["has_name"] == 1.0
     assert features["has_description"] == 1.0
     assert features["has_gps"] == 1.0
 
-    # Check richness features
+    # Vérifier les features de richesse
     assert features["description_length"] > 0
     assert features["num_images"] == 25.0
 ```
 
-### Integration Tests (tests/integration/)
+### Tests d'intégration (tests/integration/)
 
-**File:** `tests/integration/test_api.py` (25+ tests)
+**Fichier :** `tests/integration/test_api.py` (25+ tests)
 
-**Coverage:**
+**Couverture :**
 
-1. **API Endpoints**
+1. **Endpoints API**
    - Health check
-   - POI scoring (valid, minimal, invalid data)
-   - Batch scoring
-   - Model info endpoint
+   - Scoring POI (données valides, minimales, invalides)
+   - Scoring par lots
+   - Endpoint d'infos modèle
 
-2. **Request Validation**
-   - Missing required fields (422 errors)
-   - Invalid coordinates (validation)
-   - Malformed JSON (422 errors)
+2. **Validation des requêtes**
+   - Champs requis manquants (erreurs 422)
+   - Coordonnées invalides (validation)
+   - JSON mal formé (erreurs 422)
 
-3. **Error Handling**
-   - 404 for invalid endpoints
-   - 405 for invalid HTTP methods
-   - Proper error messages
+3. **Gestion d'erreurs**
+   - 404 pour endpoints invalides
+   - 405 pour méthodes HTTP invalides
+   - Messages d'erreur appropriés
 
 4. **Performance**
-   - Response time benchmarks (<1s)
-   - Concurrent request handling (10 workers)
+   - Benchmarks de temps de réponse (<1s)
+   - Gestion de requêtes concurrentes (10 workers)
 
-**Example Test:**
+**Exemple de test :**
 
 ```python
 def test_score_poi_valid_request(client):
@@ -869,119 +869,50 @@ def test_score_poi_valid_request(client):
     assert 0 <= data["quality_score"] <= 100
 ```
 
-### Missing Tests (Recommended Additions)
-
-Based on audit, the following tests would strengthen the suite:
-
-#### 1. Feature Engineering Tests
-
-**File:** `tests/unit/test_feature_engineering.py` (NEW)
-
-```python
-def test_calculate_poi_density():
-    """Test POI density calculation in 10km radius."""
-    pois = load_sample_pois()
-    target_poi = {"latitude": 45.8, "longitude": 6.8}
-
-    density = calculate_poi_density(target_poi, pois, radius_km=10)
-
-    assert isinstance(density, int)
-    assert density >= 0
-    assert density <= len(pois)
-
-def test_enrich_with_insee_data():
-    """Test INSEE data enrichment with GPS matching."""
-    poi = {"latitude": 48.8566, "longitude": 2.3522}
-    insee_df = load_insee_communes()
-
-    enriched = enrich_with_insee(poi, insee_df)
-
-    assert "insee_salary_median" in enriched
-    assert enriched["insee_salary_median"] > 0
-    assert "population" in enriched
-```
-
-#### 2. Data Collector Tests (with Mocking)
-
-**File:** `tests/unit/test_collectors.py` (NEW)
-
-```python
-@patch('requests.get')
-def test_openmeteo_collector_success(mock_get):
-    """Test Open-Meteo API collector with mocked response."""
-    mock_response = Mock()
-    mock_response.status_code = 200
-    mock_response.json.return_value = {
-        "daily": {
-            "temperature_2m_max": [15.0, 16.0, 14.5],
-            "precipitation_sum": [0.0, 2.5, 1.0]
-        }
-    }
-    mock_get.return_value = mock_response
-
-    collector = OpenMeteoCollector()
-    data = collector._make_request(45.75, 4.85, "2024-01-01", "2024-01-03")
-
-    assert data is not None
-    assert "daily" in data
-    assert len(data["daily"]["temperature_2m_max"]) == 3
-
-@patch('requests.get')
-def test_hubeau_collector_handles_errors(mock_get):
-    """Test Hub'Eau collector gracefully handles API errors."""
-    mock_get.side_effect = requests.exceptions.RequestException("Network error")
-
-    collector = WaterTemperatureCollector()
-    data = collector.collect_site("invalid_site")
-
-    assert data is None
-    assert collector.stats["errors"] > 0
-```
-
 ---
 
-## Performance Benchmarks
+## Performances
 
-### API Response Times (P95 Latency)
+### Temps de réponse API (latence P95)
 
-| Endpoint | Cold Start | With Cache | P95 | P99 |
-|----------|-----------|------------|-----|-----|
+| Endpoint | Démarrage à froid | Avec cache | P95 | P99 |
+|----------|-------------------|------------|-----|-----|
 | `/health` | 2ms | 2ms | 3ms | 5ms |
 | `/score-poi` | 48ms | 3ms | 60ms | 120ms |
 | `/score-batch` (10 POIs) | 250ms | 25ms | 300ms | 450ms |
 | `/model/info` | 5ms | 5ms | 8ms | 12ms |
 
-### Model Inference Performance
+### Performance d'inférence du modèle
 
-| Operation | CPU (4 cores) | Memory |
-|-----------|---------------|--------|
-| **Single POI Inference** | 4-8ms | ~150MB |
+| Opération | CPU (4 cœurs) | Mémoire |
+|-----------|---------------|---------|
+| **Inférence POI unique** | 4-8ms | ~150MB |
 | **Batch (100 POIs)** | 200-300ms | ~180MB |
-| **Model Loading** | 150ms (startup only) | 120MB |
+| **Chargement du modèle** | 150ms (au démarrage uniquement) | 120MB |
 
-### Scalability Testing
+### Tests de scalabilité
 
-**Test Configuration:**
-- 4 Uvicorn workers
-- Redis caching enabled
-- 100 concurrent clients
-- 1000 requests total
+**Configuration de test :**
+- 4 workers Uvicorn
+- Cache Redis activé
+- 100 clients concurrents
+- 1000 requêtes au total
 
-**Results:**
-- **Throughput:** 180 requests/second (with 85% cache hit rate)
-- **P95 Latency:** 58ms
-- **P99 Latency:** 145ms
-- **Error Rate:** 0.0%
+**Résultats :**
+- **Débit :** 180 requêtes/seconde (avec 85% de taux de hit cache)
+- **Latence P95 :** 58ms
+- **Latence P99 :** 145ms
+- **Taux d'erreur :** 0.0%
 
-**Conclusion:** The system can handle production traffic with horizontal scaling.
+**Conclusion :** Le système peut gérer du trafic production avec scaling horizontal.
 
 ---
 
-## Code Quality & Engineering
+## Qualité du code
 
-### Software Engineering Best Practices
+### Bonnes pratiques d'ingénierie logicielle
 
-#### 1. Type Safety with Pydantic and Type Hints
+#### 1. Type safety avec Pydantic et type hints
 
 ```python
 from typing import Dict, List, Optional
@@ -989,7 +920,7 @@ from pydantic import BaseModel, Field
 from dataclasses import dataclass
 
 class POIScoreRequest(BaseModel):
-    """Type-safe request model with validation."""
+    """Modèle de requête type-safe avec validation."""
     name: str
     latitude: float = Field(..., ge=-90, le=90)
     longitude: float = Field(..., ge=-180, le=180)
@@ -997,24 +928,24 @@ class POIScoreRequest(BaseModel):
 
 @dataclass
 class POIScoringResult:
-    """Immutable result container."""
+    """Conteneur de résultat immutable."""
     poi_id: str
     quality_score: float
     confidence: float
     timestamp: str
 ```
 
-**Benefits:**
-- Catches errors at development time
-- Self-documenting code
-- IDE autocomplete and refactoring support
+**Bénéfices :**
+- Détection d'erreurs au moment du développement
+- Code auto-documenté
+- Support d'autocomplétion et refactoring IDE
 
-#### 2. Design Patterns
+#### 2. Design patterns
 
-**Factory Pattern:**
+**Factory Pattern :**
 ```python
 def get_all_collectors() -> List[BaseCollector]:
-    """Factory method to instantiate all data collectors."""
+    """Méthode factory pour instancier tous les collecteurs de données."""
     return [
         DatatourismeCollector(),
         OpenMeteoCollector(),
@@ -1022,18 +953,18 @@ def get_all_collectors() -> List[BaseCollector]:
     ]
 ```
 
-**Dependency Injection:**
+**Dependency Injection :**
 ```python
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Load heavy resources once at startup
+    # Charger les ressources lourdes une fois au démarrage
     app.state.scorer = POIQualityScorer()
     app.state.cache = RedisCache()
     yield
-    # Cleanup on shutdown
+    # Nettoyage à l'arrêt
 ```
 
-**Repository Pattern:**
+**Repository Pattern :**
 ```python
 class POIRepository:
     def get_by_id(self, poi_id: str) -> Optional[POI]: ...
@@ -1041,30 +972,30 @@ class POIRepository:
     def save(self, poi: POI) -> None: ...
 ```
 
-#### 3. Error Handling
+#### 3. Gestion d'erreurs
 
 ```python
 class POIQualityScorer:
     def _load_model(self) -> Any:
         if not self.model_path.exists():
             raise FileNotFoundError(
-                f"Model file not found at {self.model_path}. "
-                "Please run training script first: "
+                f"Fichier modèle introuvable : {self.model_path}. "
+                "Veuillez lancer le script d'entraînement : "
                 "ml/training/03_train_quality_scorer.py"
             )
 
         try:
             return joblib.load(self.model_path)
         except Exception as e:
-            raise RuntimeError(f"Failed to load model: {e}")
+            raise RuntimeError(f"Échec du chargement du modèle : {e}")
 ```
 
-**Principles:**
-- Fail-fast with clear error messages
-- Actionable guidance in error text
-- Proper exception hierarchy
+**Principes :**
+- Fail-fast avec messages d'erreur clairs
+- Instructions actionnables dans le texte d'erreur
+- Hiérarchie d'exceptions appropriée
 
-#### 4. Logging & Observability
+#### 4. Logging et observabilité
 
 ```python
 import logging
@@ -1080,36 +1011,36 @@ async def score_poi(request: POIScoreRequest):
         logger.info(f"Score: {result.quality_score}/100")
         return result
     except Exception as e:
-        logger.error(f"Scoring failed: {e}", exc_info=True)
+        logger.error(f"Échec du scoring: {e}", exc_info=True)
         raise
 ```
 
-#### 5. Docstrings & Documentation
+#### 5. Docstrings et documentation
 
-All classes and functions have comprehensive docstrings:
+Toutes les classes et fonctions ont des docstrings complètes :
 
 ```python
 def extract_features(self, poi_data: Dict[str, Any]) -> Dict[str, float]:
     """
-    Extract ML features from raw POI data.
+    Extrait les features ML depuis les données POI brutes.
 
-    This method transforms raw POI information into 17 engineered features
-    used by the quality scoring model. Features include:
-    - Completeness indicators (7 binary features)
-    - Richness metrics (3 continuous features)
-    - Context data (4 features from external sources)
-    - Freshness indicators (2 temporal features)
+    Cette méthode transforme les informations POI brutes en 17 features
+    engineered utilisées par le modèle de scoring de qualité. Les features incluent :
+    - Indicateurs de complétude (7 features binaires)
+    - Métriques de richesse (3 features continues)
+    - Données de contexte (4 features depuis sources externes)
+    - Indicateurs de fraîcheur (2 features temporelles)
 
     Args:
-        poi_data: Dictionary containing POI information
-                  Required keys: latitude, longitude
-                  Optional keys: name, description, images, etc.
+        poi_data: Dictionnaire contenant les informations POI
+                  Clés requises: latitude, longitude
+                  Clés optionnelles: name, description, images, etc.
 
     Returns:
-        Dictionary of 17 engineered features with float values
+        Dictionnaire de 17 features engineered avec valeurs float
 
     Raises:
-        ValueError: If required fields (lat/lon) are missing
+        ValueError: Si les champs requis (lat/lon) sont manquants
 
     Example:
         >>> scorer = POIQualityScorer()
@@ -1125,24 +1056,24 @@ def extract_features(self, poi_data: Dict[str, Any]) -> Dict[str, float]:
 
 ---
 
-## Deployment
+## Déploiement
 
-### Docker Deployment
+### Déploiement Docker
 
-#### Build Images
+#### Construire les images
 
 ```bash
-# Build all services
+# Construire tous les services
 docker-compose build
 
-# Build specific service
+# Construire un service spécifique
 docker-compose build api
 ```
 
-#### Deploy with docker-compose
+#### Déployer avec docker-compose
 
 ```yaml
-# docker-compose.yml (simplified)
+# docker-compose.yml (simplifié)
 version: '3.8'
 
 services:
@@ -1157,7 +1088,7 @@ services:
     depends_on:
       - redis
     deploy:
-      replicas: 3  # Horizontal scaling
+      replicas: 3  # Scaling horizontal
 
   redis:
     image: redis:7-alpine
@@ -1174,19 +1105,19 @@ services:
       - api
 ```
 
-#### Production Deployment Checklist
+#### Checklist de déploiement production
 
-- [ ] Set `ENVIRONMENT=production` in `.env`
-- [ ] Configure Redis persistence (RDB snapshots)
-- [ ] Set up Prometheus + Grafana monitoring
-- [ ] Configure CORS for production domain
-- [ ] Enable API rate limiting
-- [ ] Set up log aggregation (ELK, Datadog)
-- [ ] Configure auto-scaling (Kubernetes HPA)
-- [ ] Set up SSL/TLS certificates
-- [ ] Configure backup strategy for model files
+- [ ] Définir `ENVIRONMENT=production` dans `.env`
+- [ ] Configurer la persistence Redis (snapshots RDB)
+- [ ] Mettre en place Prometheus + Grafana monitoring
+- [ ] Configurer CORS pour le domaine production
+- [ ] Activer le rate limiting API
+- [ ] Configurer l'agrégation de logs (ELK, Datadog)
+- [ ] Configurer l'auto-scaling (Kubernetes HPA)
+- [ ] Mettre en place les certificats SSL/TLS
+- [ ] Configurer la stratégie de backup pour les fichiers modèle
 
-### Kubernetes Deployment (Optional)
+### Déploiement Kubernetes (optionnel)
 
 ```yaml
 # k8s/deployment.yaml
@@ -1220,129 +1151,129 @@ spec:
 
 ---
 
-## Technical Highlights
+## Points techniques clés
 
-### What Distinguishes This Project from a Typical ML Portfolio
+### Ce qui distingue ce projet d'un portfolio ML typique
 
-#### 1. Production-Grade Code, Not a Notebook
+#### 1. Code production-ready, pas un notebook
 
-Most ML portfolios consist of Jupyter notebooks with exploratory analysis. This project is a **complete production system**:
+La plupart des portfolios ML consistent en des notebooks Jupyter avec de l'analyse exploratoire. Ce projet est un **système de production complet** :
 
-- **API-First Design**: FastAPI with OpenAPI documentation
-- **Containerized**: Docker and docker-compose for reproducible deployments
-- **Tested**: 45+ unit and integration tests with pytest
-- **Typed**: Full type hints throughout the codebase
-- **Documented**: Comprehensive docstrings and architectural documentation
-- **Monitored**: Prometheus metrics and Grafana dashboards
+- **API-first design** : FastAPI avec documentation OpenAPI
+- **Conteneurisé** : Docker et docker-compose pour déploiements reproductibles
+- **Testé** : 45+ tests unitaires et d'intégration avec pytest
+- **Typé** : Type hints complets dans tout le codebase
+- **Documenté** : Docstrings complètes et documentation architecturale
+- **Monitoré** : Métriques Prometheus et dashboards Grafana
 
-#### 2. End-to-End MLOps Pipeline
+#### 2. Pipeline MLOps de bout en bout
 
-From data collection to production deployment:
+De la collecte de données au déploiement en production :
 
 ```
-Data APIs → Collectors → Feature Engineering → Training →
-Model Serialization → API Deployment → Monitoring
+APIs de données → Collecteurs → Feature Engineering → Entraînement →
+Sérialisation modèle → Déploiement API → Monitoring
 ```
 
-Every step is automated and reproducible.
+Chaque étape est automatisée et reproductible.
 
-#### 3. Software Engineering Principles
+#### 3. Principes d'ingénierie logicielle
 
-- **SOLID Principles**: Single responsibility, dependency injection, interface segregation
-- **Design Patterns**: Factory, repository, dataclass patterns
-- **Error Handling**: Fail-fast with actionable error messages
-- **Logging**: Structured logging with appropriate log levels
+- **Principes SOLID** : responsabilité unique, injection de dépendances, ségrégation d'interfaces
+- **Design patterns** : Factory, repository, dataclass patterns
+- **Gestion d'erreurs** : Fail-fast avec messages d'erreur actionnables
+- **Logging** : Logging structuré avec niveaux appropriés
 
-#### 4. Real-World Data Complexity
+#### 4. Complexité de données réelles
 
-Not a toy dataset (Iris, MNIST). This project deals with:
+Pas un dataset jouet (Iris, MNIST). Ce projet traite :
 
-- **5+ External APIs**: DATAtourisme, Open-Meteo, Hub'Eau, INSEE, Opendatasoft
-- **50,000+ POIs**: Real-world scale
-- **Missing Data**: 45% missing opening hours, 62% missing emails
-- **Data Quality Issues**: Outdated information, inconsistent formats
-- **Feature Engineering**: 17 carefully designed features from domain knowledge
+- **5+ APIs externes** : DATAtourisme, Open-Meteo, Hub'Eau, INSEE, Opendatasoft
+- **50 000+ POIs** : Échelle réelle
+- **Données manquantes** : 45% sans horaires d'ouverture, 62% sans emails
+- **Problèmes de qualité de données** : informations obsolètes, formats inconsistants
+- **Feature engineering** : 17 features soigneusement conçues depuis la connaissance métier
 
-#### 5. Performance Optimization
+#### 5. Optimisations de performance
 
-- **Redis Caching**: 85%+ cache hit rate reduces latency from 50ms to 2ms
-- **Batch Inference**: Vectorized predictions for efficiency
-- **Lazy Loading**: Parquet columnar storage for fast column access
-- **Async API**: FastAPI async handlers for concurrency
+- **Cache Redis** : Taux de hit 85%+ réduit la latence de 50ms à 2ms
+- **Inférence par lots** : Prédictions vectorisées pour l'efficacité
+- **Lazy loading** : Stockage colonne Parquet pour accès rapide aux colonnes
+- **API async** : Handlers async FastAPI pour la concurrence
 
 ---
 
-## License
+## Licence
 
-**Copyright (c) 2025 Nicolas Angougeard. All rights reserved.**
+**Copyright (c) 2025 Nicolas Angougeard. Tous droits réservés.**
 
-This project is a personal technical portfolio. The source code is provided for demonstration purposes only and is not intended for commercial use by third parties without express authorization.
+Ce projet est un portfolio technique personnel. Le code source est fourni à titre de démonstration uniquement et n'est pas destiné à une utilisation commerciale par des tiers sans autorisation expresse.
 
-**Key Terms:**
+**Termes clés :**
 
-1. **Viewing and Learning:** You are free to view and study this code for educational purposes.
+1. **Consultation et apprentissage :** Vous êtes libre de consulter et d'étudier ce code à des fins éducatives.
 
-2. **No Commercial Use:** Commercial use, redistribution, or deployment of this system by third parties is prohibited without explicit written permission.
+2. **Pas d'utilisation commerciale :** L'utilisation commerciale, la redistribution ou le déploiement de ce système par des tiers est interdite sans autorisation écrite explicite.
 
-3. **Attribution:** If you reference this work in articles, presentations, or derivative works, please provide appropriate attribution.
+3. **Attribution :** Si vous référencez ce travail dans des articles, présentations ou travaux dérivés, veuillez fournir une attribution appropriée.
 
-4. **No Warranty:** This software is provided "as is" without warranty of any kind, express or implied.
+4. **Pas de garantie :** Ce logiciel est fourni "tel quel" sans garantie d'aucune sorte, expresse ou implicite.
 
-**For Recruiters and Companies:**
+**Pour les recruteurs et entreprises :**
 
-If you are interested in hiring me or discussing collaboration opportunities, please contact me directly. I am open to discussing licensing terms for specific use cases.
+Si vous êtes intéressé pour me recruter ou discuter d'opportunités de collaboration, contactez-moi directement. Je suis ouvert à discuter des termes de licence pour des cas d'usage spécifiques.
 
-**Contact:**
-- GitHub: [@Aguern](https://github.com/Aguern)
-- Email: [Contact via GitHub profile]
+**Contact :**
+- GitHub : [@Aguern](https://github.com/Aguern)
+- Email : [Contact via profil GitHub]
 
 ---
 
-## Author
+## Auteur
 
 **Nicolas Angougeard**
-Self-taught ML/AI Engineer | Python & MLOps Specialist
+Ingénieur ML/IA autodidacte | Spécialiste Python & MLOps
 
-**Skills Demonstrated in This Project:**
+**Compétences démontrées dans ce projet :**
 
-- **Machine Learning**: Scikit-learn, feature engineering, model evaluation, deployment
-- **Software Engineering**: Python, type hints, design patterns, clean architecture
-- **API Development**: FastAPI, Pydantic, OpenAPI, async programming
-- **Data Engineering**: Parquet, pandas, DuckDB, data pipelines
-- **DevOps**: Docker, docker-compose, Redis, monitoring (Prometheus/Grafana)
-- **Testing**: Pytest, unit tests, integration tests, mocking
-- **Documentation**: Technical writing, architectural documentation, API docs
+- **Machine learning** : Scikit-learn, feature engineering, évaluation de modèle, déploiement
+- **Ingénierie logicielle** : Python, type hints, design patterns, architecture propre
+- **Développement d'API** : FastAPI, Pydantic, OpenAPI, programmation async
+- **Data engineering** : Parquet, pandas, DuckDB, pipelines de données
+- **DevOps** : Docker, docker-compose, Redis, monitoring (Prometheus/Grafana)
+- **Tests** : Pytest, tests unitaires, tests d'intégration, mocking
+- **Documentation** : Rédaction technique, documentation architecturale, docs API
 
-**Why This Project Matters:**
+**Pourquoi ce projet compte :**
 
-This project represents **18 months of self-directed learning** transitioning from traditional software development to ML/AI engineering. It demonstrates:
+Ce projet représente **18 mois d'apprentissage autodidacte** en transition du développement logiciel traditionnel vers l'ingénierie ML/IA. Il démontre :
 
-1. **Ability to learn complex topics independently** (ML, data engineering, MLOps)
-2. **Production mindset** (not just model training, but deployment and monitoring)
-3. **Software engineering rigor** (testing, typing, documentation)
-4. **End-to-end thinking** (from problem definition to deployed solution)
+1. **Capacité d'apprendre des sujets complexes de manière autonome** (ML, data engineering, MLOps)
+2. **Mindset production** (pas juste l'entraînement de modèle, mais déploiement et monitoring)
+3. **Rigueur d'ingénierie logicielle** (tests, typing, documentation)
+4. **Pensée de bout en bout** (de la définition du problème à la solution déployée)
 
-**Career Goal:** Join a startup as an ML/AI Engineer where I can contribute to building production ML systems while continuing to learn from experienced engineers.
-
----
-
-## Acknowledgments
-
-**Data Sources:**
-- **DATAtourisme**: French national tourism database
-- **Open-Meteo**: Free weather API (no key required)
-- **Hub'Eau**: French government water quality database
-- **INSEE**: French National Institute of Statistics
-- **Opendatasoft**: Open data aggregation platform
-
-**Technologies:**
-- **FastAPI**: Modern Python web framework by Sebastián Ramírez
-- **scikit-learn**: Machine learning library by INRIA & contributors
-- **Docker**: Containerization platform
-- **Redis**: In-memory data structure store
+**Objectif de carrière :** Rejoindre une startup comme ingénieur ML/IA où je peux contribuer à construire des systèmes ML de production tout en continuant à apprendre auprès d'ingénieurs expérimentés.
 
 ---
 
-**Built with precision, engineered for production.**
+## Remerciements
 
-**Alpine Guide ML** © November 2025 | Nicolas Angougeard
+**Sources de données :**
+- **DATAtourisme** : Base de données nationale du tourisme français
+- **Open-Meteo** : API météo gratuite (pas de clé requise)
+- **Hub'Eau** : Base de données gouvernementale française sur la qualité de l'eau
+- **INSEE** : Institut national de la statistique et des études économiques
+- **Opendatasoft** : Plateforme d'agrégation de données ouvertes
+
+**Technologies :**
+- **FastAPI** : Framework web Python moderne par Sebastián Ramírez
+- **scikit-learn** : Bibliothèque de machine learning par INRIA & contributeurs
+- **Docker** : Plateforme de conteneurisation
+- **Redis** : Store de structure de données en mémoire
+
+---
+
+**Construit avec précision, engineered pour la production.**
+
+**Alpine Guide ML** © Novembre 2025 | Nicolas Angougeard
