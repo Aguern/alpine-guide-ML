@@ -132,13 +132,31 @@ data/processed/*.csv
 !data/processed/.gitkeep
 
 # ML models (too large, regenerate with training scripts)
-ml/models/**/*.pkl
-ml/models/**/*.joblib
-ml/models/**/*.h5
-ml/models/**/*.pt
-ml/models/**/*.pth
-!ml/models/**/.gitkeep
+backend/ml/models/**/*.pkl
+backend/ml/models/**/*.joblib
+backend/ml/models/**/*.h5
+backend/ml/models/**/*.pt
+backend/ml/models/**/*.pth
+!backend/ml/models/**/.gitkeep
 # Keep model metadata (lightweight)
-!ml/models/**/metrics.json
-!ml/models/**/features.txt
-!ml/models/**/feature_importance.csv
+!backend/ml/models/**/metrics.json
+!backend/ml/models/**/features.txt
+!backend/ml/models/**/feature_importance.csv
+
+# Widget build artifacts
+widget/dist/
+widget/node_modules/
+widget/*.min.js
+widget/*.min.css
+
+# Backend logs and runtime
+backend/logs/
+logs/
+*.log
+
+# Secrets and keys
+.env
+.env.local
+.env.production
+*.key
+*.pem
