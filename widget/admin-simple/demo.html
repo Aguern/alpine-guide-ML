@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alpine Guide Demo - Annecy</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: #f8fafc;
+            color: #1e293b;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #0f172a;
+            margin-bottom: 0.5rem;
+        }
+        
+        .subtitle {
+            color: #64748b;
+            font-size: 1rem;
+        }
+        
+        .demo-section {
+            background: white;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+        }
+        
+        .demo-section h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: #1e293b;
+        }
+        
+        .territory-selector {
+            display: flex;
+            gap: 0.75rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .territory-btn {
+            background: #f1f5f9;
+            color: #475569;
+            border: 1px solid #e2e8f0;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .territory-btn:hover {
+            background: #e2e8f0;
+            border-color: #cbd5e1;
+        }
+        
+        .territory-btn.active {
+            background: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+        }
+        
+        .info-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .info-box h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: #1e293b;
+        }
+        
+        .info-box p {
+            color: #64748b;
+            margin-bottom: 1rem;
+        }
+        
+        .info-box ul {
+            color: #64748b;
+            padding-left: 1.25rem;
+        }
+        
+        .info-box li {
+            margin-bottom: 0.25rem;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .stat-item {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #3b82f6;
+            display: block;
+        }
+        
+        .stat-label {
+            color: #64748b;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+        
+        .example-questions {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+        
+        .example-questions h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #1e293b;
+        }
+        
+        .question-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 0.75rem;
+        }
+        
+        .question-item {
+            background: white;
+            border: 1px solid #e2e8f0;
+            padding: 0.875rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.875rem;
+        }
+        
+        .question-item:hover {
+            border-color: #3b82f6;
+            box-shadow: 0 1px 3px 0 rgba(59, 130, 246, 0.1);
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .territory-selector {
+                justify-content: stretch;
+            }
+            
+            .territory-btn {
+                flex: 1;
+            }
+            
+            .stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <nav style="text-align: center; margin-bottom: 2rem;">
+                <a href="index.html" style="display: inline-flex; align-items: center; padding: 0.5rem 1rem; margin: 0 0.25rem; border-radius: 6px; background: #f8fafc; color: #475569; border: 1px solid #e2e8f0; text-decoration: none; font-size: 0.875rem; font-weight: 500;">
+                    ⚙️ Configuration
+                </a>
+                <a href="demo.html" style="display: inline-flex; align-items: center; padding: 0.5rem 1rem; margin: 0 0.25rem; border-radius: 6px; background: #3b82f6; color: white; text-decoration: none; font-size: 0.875rem; font-weight: 500;">
+                    🎯 Démo
+                </a>
+            </nav>
+            <h1>🏔️ Alpine Guide Demo</h1>
+            <p class="subtitle">Assistant touristique IA pour les Alpes françaises</p>
+        </header>
+
+        <div class="demo-section">
+            <h2>Sélectionnez un territoire :</h2>
+            <div class="territory-selector">
+                <button class="territory-btn active" onclick="loadTerritory('annecy', this)">
+                    🏔️ Annecy
+                </button>
+                <button class="territory-btn" onclick="loadTerritory('chamonix', this)">
+                    ⛷️ Chamonix
+                </button>
+                <button class="territory-btn" onclick="loadTerritory('chambery', this)">
+                    🏰 Chambéry
+                </button>
+            </div>
+
+            <div class="info-box">
+                <h4>💡 Comment utiliser le widget ?</h4>
+                <p>Cliquez sur le bouton bleu en bas à droite pour ouvrir le chat. Posez vos questions en français sur :</p>
+                <ul>
+                    <li>Les restaurants et la gastronomie locale</li>
+                    <li>Les activités et randonnées</li>
+                    <li>La planification de votre séjour</li>
+                    <li>Les événements et la météo</li>
+                </ul>
+            </div>
+
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-number">592</div>
+                    <div class="stat-label">Points d'intérêt</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">25</div>
+                    <div class="stat-label">Intents IA</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">3</div>
+                    <div class="stat-label">Territoires</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="demo-section example-questions">
+            <h3>💬 Exemples de questions à poser :</h3>
+            <div class="question-list">
+                <div class="question-item" onclick="askQuestion('Je cherche un restaurant avec terrasse à Annecy')">
+                    🍽️ "Je cherche un restaurant avec terrasse à Annecy"
+                </div>
+                <div class="question-item" onclick="askQuestion('Randonnée facile autour du lac d\'Annecy')">
+                    🥾 "Randonnée facile autour du lac d'Annecy"
+                </div>
+                <div class="question-item" onclick="askQuestion('Que faire ce weekend à Annecy ?')">
+                    📅 "Que faire ce weekend à Annecy ?"
+                </div>
+                <div class="question-item" onclick="askQuestion('Programme pour 3 jours à Annecy en couple')">
+                    💑 "Programme pour 3 jours à Annecy en couple"
+                </div>
+                <div class="question-item" onclick="askQuestion('Où manger une bonne fondue ?')">
+                    🧀 "Où manger une bonne fondue ?"
+                </div>
+                <div class="question-item" onclick="askQuestion('Activités pour enfants à Annecy')">
+                    👨‍👩‍👧‍👦 "Activités pour enfants à Annecy"
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentTerritory = 'annecy';
+        const territoryKeys = {
+            'annecy': '2494c9c3bc567989cc95a5d4530952cb0bf4a57475132c91b26d2f57760b5862',
+            'chamonix': '22009fced213fef91c772a9948dbd9b6eb782997ce1f11a40e3a3152462977ef',
+            'chambery': '10634440c5bc8d039e140fb9ea79a1072266dd6965ccbd10a9ad50643348a308'
+        };
+
+        function loadTerritory(territory, element) {
+            currentTerritory = territory;
+            
+            // Update active button
+            document.querySelectorAll('.territory-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            if (element) {
+                element.classList.add('active');
+            }
+            
+            // Remove existing widget
+            const existingWidget = document.querySelector('.alpine-guide-widget-container');
+            if (existingWidget) {
+                existingWidget.remove();
+            }
+            
+            // Remove existing script
+            const existingScript = document.querySelector('script[src*="alpine-guide-widget.js"]');
+            if (existingScript) {
+                existingScript.remove();
+            }
+            
+            // Add new widget
+            setTimeout(() => {
+                const script = document.createElement('script');
+                script.src = '../widget/alpine-guide-widget.js?v=' + Date.now();
+                script.setAttribute('data-territory', territory);
+                script.setAttribute('data-api-key', territoryKeys[territory]);
+                script.setAttribute('data-api-base', 'http://localhost:8000');
+                document.body.appendChild(script);
+            }, 100);
+        }
+
+        function askQuestion(question) {
+            // Open widget if closed
+            const widget = document.querySelector('.alpine-guide-widget-container');
+            if (widget && widget.style.display === 'none') {
+                const toggleBtn = widget.querySelector('.alpine-guide-toggle');
+                if (toggleBtn) toggleBtn.click();
+            }
+            
+            // Set the question in the input
+            setTimeout(() => {
+                const input = document.querySelector('.alpine-guide-input input');
+                if (input) {
+                    input.value = question;
+                    input.focus();
+                    // Trigger input event
+                    input.dispatchEvent(new Event('input', { bubbles: true }));
+                }
+            }, 300);
+        }
+
+        // Load Annecy by default
+        window.addEventListener('load', () => {
+            loadTerritory('annecy');
+        });
+    </script>
+</body>
+</html>

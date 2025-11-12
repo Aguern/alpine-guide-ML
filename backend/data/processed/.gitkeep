@@ -1,0 +1,12 @@
+# This directory contains processed feature datasets
+#
+# Files are excluded from git (see .gitignore) to avoid versioning large files.
+#
+# To regenerate:
+# 1. Run data collection: python data/ingestion/datatourisme_collector.py
+# 2. Run feature engineering: python ml/training/02_feature_engineering.py
+#
+# Expected files:
+# - features_ml.parquet (~4MB): ML-ready features for 50k+ POIs
+# - pois_enriched_eda.parquet (~3.6MB): Enriched POI data for EDA
+# - opportunities.json/csv: Business opportunity zones

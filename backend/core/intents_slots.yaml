@@ -1,0 +1,412 @@
+intents:
+  # MÉTÉO ET CONDITIONS
+  meteo:
+    description: "Informations météorologiques"
+    slots_obligatoires: []
+    slots_optionnels:
+      - localisation
+      - date
+      - heure
+      - durée_prevision
+    exemple_demande_clarification:
+      - utilisateur: "Quel temps fera-t-il ?"
+        clarification: "Pour te donner la météo, j'ai besoin de savoir où et quand ? 🌤️"
+      - utilisateur: "Il va pleuvoir ?"
+        clarification: "Dis-moi ta localisation et la date qui t'intéresse pour que je vérifie ça ! ☔"
+
+  # RESTAURATION
+  restaurant:
+    description: "Recherche de restaurants"
+    slots_obligatoires: []
+    slots_optionnels:
+      - localisation
+      - type_cuisine
+      - date_heure
+      - nombre_personnes
+      - presence_enfants
+      - budget
+      - regime_alimentaire
+      - terrasse
+    exemple_demande_clarification:
+      - utilisateur: "Je cherche un restaurant"
+        clarification: "Avec plaisir ! Peux-tu me dire où tu te trouves et quand tu souhaites y aller ? 🍽️"
+      - utilisateur: "Un bon resto italien"
+        clarification: "Super choix ! Dans quel secteur et pour quelle date/heure ? 🍝"
+
+  reservation_restaurant:
+    description: "Réservation de table"
+    slots_obligatoires:
+      - nom_restaurant
+      - date
+      - heure
+      - nombre_personnes
+      - nom_client
+      - telephone
+    slots_optionnels:
+      - email
+      - demandes_speciales
+      - presence_enfants
+    exemple_demande_clarification:
+      - utilisateur: "Je veux réserver une table"
+        clarification: "Parfait ! J'ai besoin du nom du restaurant, la date, l'heure et le nombre de personnes 📅"
+
+  # ACTIVITÉS SPORTIVES ET LOISIRS
+  randonnee:
+    description: "Recherche de randonnées"
+    slots_obligatoires:
+      - localisation
+      - duree
+      - difficulte
+    slots_optionnels:
+      - date
+      - nombre_participants
+      - age_participants
+      - moyen_transport
+      - animaux_compagnie
+      - type_terrain
+    exemple_demande_clarification:
+      - utilisateur: "Une belle rando"
+        clarification: "Excellente idée ! Où souhaites-tu randonner, combien de temps et quel niveau de difficulté ? 🥾"
+      - utilisateur: "Balade facile"
+        clarification: "Je vais t'aider ! Dans quel secteur et pour quelle durée environ ? 🌲"
+
+  activite_sportive:
+    description: "Activités sportives diverses"
+    slots_obligatoires:
+      - type_activite
+      - localisation
+      - date
+    slots_optionnels:
+      - niveau
+      - duree
+      - equipement_inclus
+      - nombre_participants
+      - age_participants
+    exemple_demande_clarification:
+      - utilisateur: "Je veux faire du sport"
+        clarification: "Super ! Quelle activité t'intéresse, où et quand ? 🏃‍♀️"
+      - utilisateur: "Du vélo demain"
+        clarification: "Parfait pour le vélo demain ! Dans quel secteur souhaites-tu pédaler ? 🚴"
+
+  ski:
+    description: "Activités de ski et sports d'hiver"
+    slots_obligatoires:
+      - station
+      - date
+      - type_ski
+    slots_optionnels:
+      - niveau
+      - forfait_inclus
+      - location_materiel
+      - cours
+      - nombre_jours
+    exemple_demande_clarification:
+      - utilisateur: "Je veux skier"
+        clarification: "Génial ! Dans quelle station, à quelle date et quel type de ski (alpin, fond...) ? ⛷️"
+
+  baignade:
+    description: "Lieux de baignade"
+    slots_obligatoires:
+      - localisation
+      - type_lieu
+    slots_optionnels:
+      - date
+      - presence_enfants
+      - acces_pmr
+      - surveillee
+    exemple_demande_clarification:
+      - utilisateur: "Où me baigner ?"
+        clarification: "Je peux t'aider ! Tu cherches dans quel secteur et plutôt piscine, lac ou plage ? 🏊"
+
+  water_temperature:
+    description: "Température de l'eau des lacs et rivières"
+    slots_obligatoires:
+      - plan_eau
+    slots_optionnels:
+      - localisation
+      - date
+    exemple_demande_clarification:
+      - utilisateur: "Température de l'eau"
+        clarification: "De quel plan d'eau veux-tu connaître la température ? (lac d'Annecy, rivière...) 🌡️"
+      - utilisateur: "Il fait chaud l'eau ?"
+        clarification: "Dans quel lac ou quelle rivière veux-tu te baigner ? 💧"
+
+  swimming_advice:
+    description: "Conseils pour la baignade selon la température"
+    slots_obligatoires:
+      - plan_eau
+    slots_optionnels:
+      - localisation
+      - activite_prevue
+    exemple_demande_clarification:
+      - utilisateur: "J'ai besoin d'une combinaison ?"
+        clarification: "Pour nager dans quel plan d'eau ? (lac d'Annecy, etc.) 🏊‍♀️"
+      - utilisateur: "Conseils baignade"
+        clarification: "Dans quel lac ou rivière comptes-tu te baigner ? 🌊"
+
+  # ÉVÉNEMENTS ET CULTURE
+  evenement:
+    description: "Événements locaux"
+    slots_obligatoires:
+      - localisation
+      - date_debut
+    slots_optionnels:
+      - date_fin
+      - type_evenement
+      - gratuit
+      - age_minimum
+      - nombre_personnes
+    exemple_demande_clarification:
+      - utilisateur: "Quoi faire ce weekend ?"
+        clarification: "Je vais te trouver des idées ! Tu es dans quel secteur et on parle de quel weekend ? 🎉"
+      - utilisateur: "Des événements sympas"
+        clarification: "Avec plaisir ! Où te trouves-tu et pour quelles dates ? 📅"
+
+  musee:
+    description: "Musées et expositions"
+    slots_obligatoires:
+      - localisation
+    slots_optionnels:
+      - type_musee
+      - date_visite
+      - tarif_reduit
+      - visite_guidee
+      - langue
+    exemple_demande_clarification:
+      - utilisateur: "Un musée à visiter"
+        clarification: "Je vais te conseiller ! Dans quelle ville ou région cherches-tu ? 🏛️"
+
+  visite_guidee:
+    description: "Visites guidées et circuits touristiques"
+    slots_obligatoires:
+      - localisation
+      - date
+    slots_optionnels:
+      - type_visite
+      - duree
+      - langue
+      - nombre_personnes
+      - theme
+    exemple_demande_clarification:
+      - utilisateur: "Une visite guidée"
+        clarification: "Excellente idée ! Où souhaites-tu faire cette visite et à quelle date ? 🎭"
+
+  # MOBILITÉ
+  location_velo:
+    description: "Location de vélos"
+    slots_obligatoires:
+      - localisation
+      - date_debut
+      - duree
+    slots_optionnels:
+      - type_velo
+      - nombre_velos
+      - accessoires
+      - livraison
+    exemple_demande_clarification:
+      - utilisateur: "Louer des vélos"
+        clarification: "Parfait ! Où, à partir de quand et pour combien de temps ? 🚲"
+
+  location_voiture:
+    description: "Location de voiture"
+    slots_obligatoires:
+      - lieu_prise_en_charge
+      - date_debut
+      - date_fin
+    slots_optionnels:
+      - categorie_vehicule
+      - transmission
+      - carburant
+      - age_conducteur
+      - lieu_restitution
+    exemple_demande_clarification:
+      - utilisateur: "J'ai besoin d'une voiture"
+        clarification: "Je m'en occupe ! Où veux-tu la récupérer et pour quelles dates ? 🚗"
+
+  borne_recharge:
+    description: "Bornes de recharge électrique"
+    slots_obligatoires:
+      - localisation
+    slots_optionnels:
+      - type_prise
+      - puissance
+      - disponibilite_immediate
+      - tarif
+    exemple_demande_clarification:
+      - utilisateur: "Borne de recharge"
+        clarification: "Je vais te trouver ça ! Tu cherches dans quel secteur ? ⚡"
+
+  transport_public:
+    description: "Transports en commun"
+    slots_obligatoires:
+      - point_depart
+      - point_arrivee
+    slots_optionnels:
+      - date
+      - heure
+      - type_transport
+      - mobilite_reduite
+    exemple_demande_clarification:
+      - utilisateur: "Comment aller à la gare ?"
+        clarification: "Je vais t'indiquer le trajet ! D'où pars-tu exactement ? 🚌"
+
+  # HÉBERGEMENT
+  hebergement:
+    description: "Recherche d'hébergement"
+    slots_obligatoires:
+      - localisation
+      - date_arrivee
+      - date_depart
+      - nombre_personnes
+    slots_optionnels:
+      - type_hebergement
+      - budget_max
+      - animaux_acceptes
+      - parking
+      - wifi
+      - petit_dejeuner
+      - acces_pmr
+    exemple_demande_clarification:
+      - utilisateur: "Un hôtel pas cher"
+        clarification: "Je vais chercher ! Où, pour quelles dates et combien de personnes ? 🏨"
+      - utilisateur: "Où dormir ?"
+        clarification: "Je peux t'aider ! Dans quelle ville, du... au... et pour combien de personnes ? 🛏️"
+
+  reservation_hebergement:
+    description: "Réservation d'hébergement"
+    slots_obligatoires:
+      - nom_etablissement
+      - date_arrivee
+      - date_depart
+      - nombre_personnes
+      - nom_client
+      - email
+      - telephone
+    slots_optionnels:
+      - demandes_speciales
+      - heure_arrivee
+      - moyen_paiement
+    exemple_demande_clarification:
+      - utilisateur: "Réserver cet hôtel"
+        clarification: "Parfait ! J'ai besoin des dates d'arrivée/départ, nombre de personnes et tes coordonnées 📝"
+
+  # PLANIFICATION
+  planification_sejour:
+    description: "Aide à la planification complète"
+    slots_obligatoires:
+      - destination
+      - date_debut
+      - date_fin
+      - nombre_personnes
+    slots_optionnels:
+      - budget_total
+      - centres_interet
+      - type_sejour
+      - contraintes_mobilite
+      - ages_participants
+    exemple_demande_clarification:
+      - utilisateur: "Organise mon weekend"
+        clarification: "Avec plaisir ! Où veux-tu aller, quand et vous serez combien ? 🗓️"
+
+  itineraire_touristique:
+    description: "Création d'itinéraire"
+    slots_obligatoires:
+      - localisation
+      - duree
+    slots_optionnels:
+      - centres_interet
+      - moyen_transport
+      - budget
+      - rythme_visite
+    exemple_demande_clarification:
+      - utilisateur: "Que voir en une journée ?"
+        clarification: "Je vais te préparer un bel itinéraire ! Dans quelle ville es-tu ? 🗺️"
+
+  # COMMERCE ET SERVICES
+  forfait_ski:
+    description: "Achat forfait ski"
+    slots_obligatoires:
+      - station
+      - date_debut
+      - nombre_jours
+      - nombre_personnes
+    slots_optionnels:
+      - type_forfait
+      - assurance
+      - age_skieurs
+      - reduction_applicable
+    exemple_demande_clarification:
+      - utilisateur: "Acheter forfait"
+        clarification: "D'accord ! Pour quelle station, quelles dates et combien de personnes ? 🎿"
+
+  location_materiel:
+    description: "Location matériel sportif"
+    slots_obligatoires:
+      - type_materiel
+      - localisation
+      - date_debut
+      - duree
+    slots_optionnels:
+      - taille
+      - niveau
+      - marque_preference
+      - livraison
+    exemple_demande_clarification:
+      - utilisateur: "Louer des skis"
+        clarification: "Parfait ! Où, à partir de quand et pour combien de jours ? 🎿"
+
+  shopping:
+    description: "Shopping et commerces"
+    slots_obligatoires:
+      - localisation
+      - type_commerce
+    slots_optionnels:
+      - horaires
+      - produit_recherche
+      - budget
+    exemple_demande_clarification:
+      - utilisateur: "Où faire du shopping ?"
+        clarification: "Je vais t'orienter ! Tu cherches dans quel secteur et quel type de magasins ? 🛍️"
+
+  # INFORMATIONS PRATIQUES
+  office_tourisme:
+    description: "Coordonnées office tourisme"
+    slots_obligatoires:
+      - localisation
+    slots_optionnels:
+      - service_specifique
+      - langue_accueil
+    exemple_demande_clarification:
+      - utilisateur: "Office du tourisme"
+        clarification: "Je te donne les coordonnées ! De quelle ville ? ℹ️"
+
+  urgence:
+    description: "Services d'urgence"
+    slots_obligatoires:
+      - type_urgence
+      - localisation
+    slots_optionnels:
+      - gravite
+    exemple_demande_clarification:
+      - utilisateur: "J'ai besoin d'un médecin"
+        clarification: "Je t'aide tout de suite ! Où te trouves-tu exactement ? 🏥"
+
+  wifi_gratuit:
+    description: "Points WiFi gratuits"
+    slots_obligatoires:
+      - localisation
+    slots_optionnels:
+      - type_lieu
+    exemple_demande_clarification:
+      - utilisateur: "WiFi gratuit ?"
+        clarification: "Je vais te trouver ça ! Tu cherches dans quel secteur ? 📶"
+
+# Configuration globale
+config:
+  langue_par_defaut: "fr"
+  timeout_clarification: 30
+  max_tentatives_clarification: 3
+  messages_erreur:
+    slot_manquant: "Il me manque quelques informations pour t'aider au mieux 😊"
+    incomprehension: "Je n'ai pas bien compris, peux-tu reformuler ? 🤔"
+    erreur_systeme: "Oups, j'ai rencontré un petit souci. Réessayons ! 🔄"

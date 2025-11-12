@@ -1,0 +1,14 @@
+# This directory contains trained ML models
+#
+# Model files (.pkl, .joblib) are excluded from git to avoid versioning large binaries.
+#
+# To regenerate:
+# python ml/training/03_train_quality_scorer.py
+#
+# Directory structure:
+# ml/models/
+# └── quality_scorer/
+#     ├── scorer.pkl (excluded from git)
+#     ├── metrics.json (tracked in git)
+#     ├── features.txt (tracked in git)
+#     └── feature_importance.csv (tracked in git)

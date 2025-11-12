@@ -1,0 +1,597 @@
+# Configuration territoire Annecy pour Alpine Guide Widget
+# Configuration ultra-détaillée pour déploiement marque blanche professionnel
+territory:
+  slug: annecy
+  name: "Annecy - Lac et Montagnes"
+  description: "Découvrez la Venise des Alpes avec votre guide IA personnel"
+  
+  # BRANDING COMPLET - White Label
+  branding:
+    # Identité visuelle
+    appName: "Explore Annecy"
+    tagline: "Votre guide intelligent du lac d'Annecy"
+    
+    # Palette de couleurs complète
+    colors:
+      primary: "#0066CC"           # Bleu lac d'Annecy
+      secondary: "#E6F2FF"         # Bleu très clair
+      accent: "#FF6B35"            # Orange montagne
+      success: "#28A745"           # Vert validation
+      warning: "#FFC107"           # Jaune attention
+      error: "#DC3545"             # Rouge erreur
+      
+      # Couleurs texte
+      textPrimary: "#1A1A1A"
+      textSecondary: "#6B7280"
+      textMuted: "#9CA3AF"
+      
+      # Couleurs background
+      bgPrimary: "#FFFFFF"
+      bgSecondary: "#F8FAFC"
+      bgAccent: "#F1F5F9"
+    
+    # Assets visuels
+    assets:
+      logo: "https://cdn.annecy-tourism.com/logo-annecy-guide.svg"
+      logoWhite: "https://cdn.annecy-tourism.com/logo-annecy-guide-white.svg"
+      favicon: "https://cdn.annecy-tourism.com/favicon.ico"
+      
+      # Images d'ambiance
+      heroImage: "https://cdn.annecy-tourism.com/hero-lac-annecy.jpg"
+      backgroundPattern: "https://cdn.annecy-tourism.com/pattern-mountains.svg"
+      chatAvatar: "https://cdn.annecy-tourism.com/avatar-guide-annecy.png"
+      
+      # Icônes personnalisées
+      iconWeather: "🌤️"
+      iconRestaurant: "🍽️"
+      iconActivity: "🥾"
+      iconLake: "🏞️"
+      iconMountain: "🏔️"
+    
+    # Typographie
+    fonts:
+      primary: 
+        family: "Montserrat"
+        weights: [300, 400, 600, 700]
+        url: "https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700"
+      
+      secondary:
+        family: "Open Sans" 
+        weights: [300, 400, 600]
+        url: "https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600"
+    
+    # CSS personnalisé avancé
+    customCSS: |
+      .alpine-widget {
+        box-shadow: 0 20px 25px -5px rgba(0, 102, 204, 0.1), 0 10px 10px -5px rgba(0, 102, 204, 0.04);
+        border: 1px solid rgba(0, 102, 204, 0.1);
+      }
+      
+      .alpine-chat-bubble {
+        background: linear-gradient(135deg, #0066CC 0%, #0052A3 100%);
+        border-radius: 18px 18px 4px 18px;
+      }
+      
+      .alpine-user-bubble {
+        background: linear-gradient(135deg, #F1F5F9 0%, #E2E8F0 100%);
+        border-radius: 18px 18px 18px 4px;
+      }
+      
+      .alpine-typing-indicator {
+        background: rgba(0, 102, 204, 0.1);
+        border-radius: 12px;
+      }
+  
+  # GÉOGRAPHIE ET CARTOGRAPHIE
+  geography:
+    # Centre de la carte
+    center:
+      lat: 45.8992
+      lng: 6.1294
+      name: "Centre-ville d'Annecy"
+    
+    # Niveau de zoom par défaut
+    zoom: 
+      default: 11
+      min: 9
+      max: 18
+    
+    # Limites géographiques précises
+    bounds:
+      north: 46.0500   # Jusqu'à Rumilly
+      south: 45.7500   # Jusqu'à Albertville nord
+      east: 6.4000     # Jusqu'à Ugine
+      west: 5.9500     # Jusqu'à Seyssel
+    
+    # Points d'intérêt géographiques majeurs
+    landmarks:
+      - name: "Lac d'Annecy"
+        coordinates: [45.8631, 6.1639]
+        type: "natural"
+        importance: "major"
+      
+      - name: "Vieille Ville"
+        coordinates: [45.8992, 6.1294] 
+        type: "cultural"
+        importance: "major"
+        
+      - name: "Château d'Annecy"
+        coordinates: [45.8996, 6.1268]
+        type: "monument"
+        importance: "major"
+        
+      - name: "Semnoz"
+        coordinates: [45.8139, 6.1033]
+        type: "mountain"
+        importance: "medium"
+  
+  # CONFIGURATION LINGUISTIQUE AVANCÉE
+  languages:
+    default: "fr"
+    fallback: "fr"
+    supported: ["fr", "en", "de", "it", "es"]
+    
+    # Messages système multilingues
+    messages:
+      fr:
+        welcome: "Bonjour ! Je suis votre guide IA personnel pour découvrir Annecy et ses merveilles 🏔️✨"
+        placeholder: "Demandez-moi tout sur Annecy : restaurants, activités, météo..."
+        thinking: "Je réfléchis..."
+        error: "Oups ! Une petite erreur technique. Pouvez-vous reformuler votre demande ?"
+        offline: "Je suis momentanément hors ligne. Merci de réessayer dans quelques instants."
+        
+      en:
+        welcome: "Hello! I'm your personal AI guide to discover Annecy and its wonders 🏔️✨"
+        placeholder: "Ask me anything about Annecy: restaurants, activities, weather..."
+        thinking: "Let me think..."
+        error: "Oops! A small technical error. Could you rephrase your request?"
+        offline: "I'm temporarily offline. Please try again in a few moments."
+        
+      de:
+        welcome: "Hallo! Ich bin Ihr persönlicher KI-Guide für Annecy und seine Wunder 🏔️✨"
+        placeholder: "Fragen Sie mich alles über Annecy: Restaurants, Aktivitäten, Wetter..."
+        thinking: "Ich denke nach..."
+        error: "Ups! Ein kleiner technischer Fehler. Könnten Sie Ihre Anfrage umformulieren?"
+        offline: "Ich bin vorübergehend offline. Bitte versuchen Sie es in wenigen Augenblicken erneut."
+
+  # FONCTIONNALITÉS ET CAPACITÉS
+  features:
+    # Fonctionnalités principales
+    core:
+      chat: 
+        enabled: true
+        maxHistory: 50
+        contextWindow: 10
+        
+      weather:
+        enabled: true
+        forecastDays: 7
+        updateInterval: 30 # minutes
+        
+      activities:
+        enabled: true
+        categories: ["outdoor", "cultural", "family", "adventure", "water-sports"]
+        
+      restaurants:
+        enabled: true
+        filters: ["cuisine", "price", "location", "dietary"]
+        
+      accommodation:
+        enabled: false
+        reason: "Gérée par site partenaire"
+        
+      events:
+        enabled: true
+        sources: ["datatourisme", "local-calendar"]
+        
+      transport:
+        enabled: true
+        modes: ["bus", "bike", "pedestrian", "car"]
+    
+    # Fonctionnalités avancées
+    advanced:
+      voiceInput: false
+      imageRecognition: false
+      realTimeTranslation: true
+      offlineMode: false
+      pushNotifications: true
+      geolocation: true
+      
+    # Limites et quotas
+    limits:
+      maxRequestsPerDay: 2000
+      maxRequestsPerHour: 100
+      maxConversationLength: 30
+      maxMessageLength: 1000
+      rateLimitWindow: 3600 # secondes
+
+  # INTÉGRATIONS EXTERNES
+  integrations:
+    # Service météo
+    weather:
+      provider: "openweathermap"
+      apiKey: "${OPENWEATHER_API_KEY}"
+      location: "Annecy,FR"
+      units: "metric"
+      language: "fr"
+      
+    # Données touristiques
+    tourism:
+      primary: "datatourisme"
+      secondary: "openstreetmap"
+      officialWebsite: "https://www.lac-annecy.com"
+      
+    # Partenaires locaux
+    partners:
+      - name: "Office de Tourisme Lac d'Annecy"
+        website: "https://www.lac-annecy.com"
+        apiEndpoint: "https://api.lac-annecy.com/v1"
+        
+      - name: "Sibra (Transports)"
+        website: "https://www.sibra.fr"
+        gtfsUrl: "https://data.annecy.fr/gtfs"
+        
+    # Analytics et tracking
+    analytics:
+      googleAnalytics: "GA-ANNECY-001"
+      matomoSiteId: "1"
+      hotjarId: "123456"
+      
+    # Réseaux sociaux
+    social:
+      facebook: "https://facebook.com/lacannecytourisme"
+      instagram: "@lacannecyofficiel"
+      twitter: "@annecyofficiel"
+      youtube: "https://youtube.com/c/LacAnnecyTourisme"
+
+  # PERSONNALISATION IA AVANCÉE
+  ai:
+    # Personnalité du chatbot
+    personality:
+      tone: "chaleureux et expert local"
+      style: "conversationnel et informatif"
+      expertise: "guide touristique passionné"
+      
+    # Domaines d'expertise
+    specialties:
+      primary:
+        - name: "Lac d'Annecy"
+          keywords: ["lac", "baignade", "pédalo", "voile", "tour du lac"]
+          
+        - name: "Vieille ville médiévale"
+          keywords: ["château", "palais de l'île", "canaux", "histoire", "architecture"]
+          
+        - name: "Activités nautiques"
+          keywords: ["bateau", "paddle", "kayak", "wakeboard", "plongée"]
+          
+        - name: "Randonnées montagnes"
+          keywords: ["semnoz", "parmelan", "tournette", "sentiers", "téléphérique"]
+          
+        - name: "Gastronomie savoyarde"
+          keywords: ["reblochon", "tartiflette", "diots", "fondue", "restaurants"]
+      
+      secondary:
+        - "Événements culturels"
+        - "Shopping local"
+        - "Vie nocturne"
+        - "Transports locaux"
+        - "Hébergements"
+    
+    # Réponses contextuelles
+    contextualResponses:
+      weather:
+        sunny: "Parfait pour profiter du lac ! 🌞"
+        rainy: "Idéal pour visiter les musées et la vieille ville ! ☔"
+        snow: "Magnifique pour les activités hivernales ! ❄️"
+        
+      timeOfDay:
+        morning: "Belle journée qui commence !"
+        afternoon: "L'après-midi parfait pour explorer !"
+        evening: "Soirée idéale pour se promener au bord du lac !"
+        
+      season:
+        spring: "Le printemps réveille toute la beauté d'Annecy ! 🌸"
+        summer: "L'été, la saison parfaite pour profiter du lac ! ☀️"
+        autumn: "L'automne offre des couleurs magnifiques ! 🍂"
+        winter: "L'hiver transforme Annecy en carte postale ! ❄️"
+
+  # PLANS D'EAU ET TEMPÉRATURES
+  waterBodies:
+    primary:
+      name: "Lac d'Annecy"
+      type: "lac_alpin"
+      description: "Second plus grand lac d'origine glaciaire de France"
+      coordinates: [45.8631, 6.1639]
+      characteristics:
+        altitude: 447
+        surface: 27.59 # km²
+        profondeur_max: 82
+        profondeur_moyenne: 41.5
+        volume: 1124000000 # m³
+        renouvellement: 4 # années
+      
+      # Températures saisonnières basées sur données historiques
+      temperatures:
+        hiver: # Décembre-Février
+          min: 4
+          max: 7 
+          typical: 5
+          confidence: "élevée"
+          notes: "Lac rarement gelé, température stable"
+          
+        printemps: # Mars-Mai  
+          min: 8
+          max: 14
+          typical: 11
+          confidence: "élevée"
+          notes: "Réchauffement progressif, idéal pour activités nautiques"
+          
+        ete: # Juin-Août
+          min: 18
+          max: 24
+          typical: 21
+          confidence: "élevée" 
+          notes: "Température optimale pour baignade, surface jusqu'à 25°C"
+          
+        automne: # Septembre-Novembre
+          min: 12
+          max: 17
+          typical: 15
+          confidence: "élevée"
+          notes: "Inertie thermique, encore agréable en septembre"
+      
+      # Zones de baignade spécifiques
+      swimmingAreas:
+        - name: "Plage des Marquisats"
+          coordinates: [45.8918, 6.1364]
+          characteristics: ["surveillée", "équipée", "parking"]
+          temperature_modifier: 0 # Température similaire au lac
+          
+        - name: "Plage d'Albigny"
+          coordinates: [45.8776, 6.1598] 
+          characteristics: ["surveillée", "jeux_enfants", "restaurant"]
+          temperature_modifier: +1 # Légèrement plus chaude (baie protégée)
+          
+        - name: "Saint-Jorioz"
+          coordinates: [45.8334, 6.1691]
+          characteristics: ["grande_plage", "sports_nautiques"] 
+          temperature_modifier: 0
+    
+    secondary:
+      - name: "Canal du Thiou"
+        type: "riviere_urbaine"
+        coordinates: [45.8992, 6.1294]
+        temperatures:
+          hiver: {min: 6, max: 9, typical: 7}
+          printemps: {min: 10, max: 15, typical: 12}
+          ete: {min: 16, max: 20, typical: 18}
+          automne: {min: 11, max: 16, typical: 14}
+        characteristics:
+          source: "lac_annecy"
+          debit: "variable"
+          temperature_modifier: +2 # Plus chaud que le lac (moins profond)
+          
+      - name: "Lac de Sylans"
+        type: "petit_lac"
+        coordinates: [45.9847, 5.7767]
+        temperatures:
+          hiver: {min: 3, max: 6, typical: 4}
+          printemps: {min: 7, max: 12, typical: 9}  
+          ete: {min: 16, max: 22, typical: 19}
+          automne: {min: 10, max: 15, typical: 13}
+        characteristics:
+          altitude: 988
+          surface: 0.22
+          note: "Plus froid que lac d'Annecy (altitude plus élevée)"
+    
+    # Suggestions intelligentes par contexte
+    smartSuggestions:
+      byIntent:
+        meteo:
+          - "Météo lac d'Annecy demain ?"
+          - "Conditions pour randonnée ?"
+          - "Prévisions weekend ?"
+          - "Température eau du lac ?"
+          
+        restaurant:
+          - "Restaurant vue lac ?"
+          - "Spécialités savoyardes ?" 
+          - "Où manger local pas cher ?"
+          - "Restaurant familial ?"
+          
+        activite:
+          - "Que faire aujourd'hui ?"
+          - "Activités famille avec enfants ?"
+          - "Balades faciles tour du lac ?"
+          - "Sports nautiques ?"
+          
+        transport:
+          - "Comment aller au Semnoz ?"
+          - "Bus pour Talloires ?"
+          - "Parking gratuit centre-ville ?"
+          - "Location vélo ?"
+      
+      byLocation:
+        "centre-ville":
+          - "Visite château d'Annecy"
+          - "Shopping vieille ville"
+          - "Marché local"
+          
+        "bord-lac":
+          - "Location pédalo"
+          - "Promenade lac"
+          - "Plages aménagées"
+
+# CONFIGURATION WIDGET EMBEDDABLE
+widget:
+  # Sécurité et domaines autorisés
+  security:
+    allowedDomains:
+      - "annecy.fr"
+      - "*.annecy.fr"
+      - "lac-annecy.com"
+      - "*.lac-annecy.com"
+      - "localhost"
+      - "127.0.0.1"
+      
+    allowedOrigins:
+      - "https://annecy.fr"
+      - "https://www.lac-annecy.com" 
+      - "http://localhost:*"
+      
+    corsPolicy:
+      credentials: true
+      maxAge: 86400
+      
+  # Configuration visuelle du widget
+  appearance:
+    # Position et taille
+    position: "bottom-right"
+    offset:
+      x: 24
+      y: 24
+      
+    size:
+      width: 380
+      height: 600
+      compact: 60 # Taille réduite
+      
+    # Style général
+    styling:
+      borderRadius: "16px"
+      shadow: "0 25px 50px -12px rgba(0, 102, 204, 0.25)"
+      backdrop: "blur(10px)"
+      
+    # Animation et transitions
+    animations:
+      openDuration: 300
+      closeDuration: 200
+      typingSpeed: 50
+      
+    # Thèmes disponibles  
+    themes:
+      light:
+        background: "#FFFFFF"
+        surface: "#F8FAFC"
+        onSurface: "#1A1A1A"
+        
+      dark:
+        background: "#1A1A1A"
+        surface: "#2D2D2D"
+        onSurface: "#FFFFFF"
+        
+      auto: true # Suit le thème système
+  
+  # Comportement du widget
+  behavior:
+    # Ouverture automatique
+    autoOpen:
+      enabled: false
+      delay: 5000 # 5 secondes après chargement page
+      conditions:
+        - "first_visit"
+        - "returning_user"
+        
+    # Persistance des données
+    persistence:
+      chatHistory: true
+      userPreferences: true
+      sessionDuration: 86400 # 24h
+      
+    # Notifications
+    notifications:
+      enabled: true
+      permission: "ask" # ask, granted, denied
+      types: ["weather_alerts", "event_reminders"]
+      
+    # Interactions
+    interactions:
+      suggestions: true
+      quickReplies: true
+      typing_indicator: true
+      read_receipts: false
+      
+    # Performance
+    performance:
+      lazy_load: true
+      image_optimization: true
+      cache_responses: true
+      preload_suggestions: true
+
+# CONFIGURATION BUSINESS
+business:
+  # Informations légales
+  legal:
+    entity: "Office de Tourisme du Lac d'Annecy"
+    address: "1 Rue Jean Jaurès, 74000 Annecy, France"
+    phone: "+33 4 50 45 00 33"
+    email: "info@lac-annecy.com"
+    website: "https://www.lac-annecy.com"
+    
+  # Mentions légales
+  compliance:
+    gdpr: true
+    cookies: true
+    accessibility: "AA"
+    dataRetention: 365 # jours
+    
+  # Support client
+  support:
+    email: "support-chatbot@lac-annecy.com"
+    phone: "+33 4 50 45 00 33"
+    hours: "9h-18h du lundi au samedi"
+    languages: ["fr", "en"]
+    
+  # Facturation et limites
+  billing:
+    plan: "premium"
+    monthlyQuota: 50000
+    overage: 0.001 # €/requête
+    billingContact: "comptabilite@lac-annecy.com"
+
+# MONITORING ET ANALYTICS
+monitoring:
+  # Métriques à suivre
+  metrics:
+    conversations: true
+    user_satisfaction: true
+    response_time: true
+    error_rate: true
+    cache_hit_rate: true
+    
+  # Alertes
+  alerts:
+    response_time_threshold: 2000 # ms
+    error_rate_threshold: 5 # %
+    quota_threshold: 90 # %
+    
+  # Rapports automatiques
+  reports:
+    daily: true
+    weekly: true
+    monthly: true
+    recipients: ["analytics@lac-annecy.com"]
+
+# CONFIGURATION DE DÉPLOIEMENT
+deployment:
+  environment: "production"
+  version: "1.0.0"
+  region: "eu-west-1"
+  
+  # CDN et performance
+  cdn:
+    enabled: true
+    provider: "cloudflare"
+    zone: "annecy-guide.com"
+    
+  # Backup et récupération
+  backup:
+    enabled: true
+    frequency: "daily"
+    retention: 30 # jours
+    
+  # Mise à jour
+  updates:
+    automatic: false
+    maintenance_window: "02:00-04:00 UTC"
+    notification_delay: 48 # heures
